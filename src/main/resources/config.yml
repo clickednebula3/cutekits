@@ -1,0 +1,119 @@
+data:
+  maxPersonalKitCount: 5
+
+defaultCollections:
+  - collectionName: fresh
+    kits:
+      - requiresBuildBreak: false
+        inventory:
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_SWORD
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_BOOTS
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_LEGGINGS
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_CHESTPLATE
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_HELMET
+          - null
+        kitName: freshiron
+
+playerCollections:
+  - ownerUUID: c1b99d0e-b001-499f-a331-8e6fc12ea6cd
+    collectionName: CyberBlades
+    kits:
+      - requiresBuildBreak: false
+        inventory:
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_SWORD
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - null
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_BOOTS
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_LEGGINGS
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_CHESTPLATE
+          - ==: org.bukkit.inventory.ItemStack
+            v: 3337
+            type: IRON_HELMET
+          - null
+        kitName: A Cute Kit
