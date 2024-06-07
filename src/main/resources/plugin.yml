@@ -1,7 +1,7 @@
 name: CuteKits
 version: '${project.version}'
 main: nebcutekits.cutekits.CuteKits
-api-version: '1.19'
+api-version: '1.20'
 author: nebproductions
 description: A specialised kit plugin made by nebby for nebneb.
 website: http://nebneb.ddns.net/devlog

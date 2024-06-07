@@ -9,8 +9,5 @@
         <module name="cutekits" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="cutekits" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
