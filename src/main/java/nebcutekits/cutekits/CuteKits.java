@@ -8,6 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+//todo: GUI MENUS
+//ck
+/*
+    /ck OR /ck view
+        [Owned Kits / Global Kits / Server Kits]
+ */
+
 public final class CuteKits extends JavaPlugin {
 
     @Override

@@ -1,15 +1,15 @@
 package nebcutekits.cutekits.Utilities;
 
 import nebcutekits.cutekits.CuteKits;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ConfigReader {
     public CuteKits cutekits;
@@ -183,7 +183,7 @@ public class ConfigReader {
         }
         return -1;
     }
-    public int getDefaultKitIndexWithenCollection(String kitName, int collectionIndex) {
+    public int getDefaultKitIndexWithinCollection(String kitName, int collectionIndex) {
         if (collectionIndex < 0) { collectionIndex = 0; }
         if (collectionIndex >= defaultCollections.size()) { collectionIndex = defaultCollections.size()-1; }
         if (collectionIndex == -1) {
@@ -196,6 +196,33 @@ public class ConfigReader {
             }
         }
         return -1; //didn't find kit in collection
+    }
+
+    public void viewMainMenu(Player player) {
+        Inventory mainInv = Bukkit.createInventory(player, 9*3, "cKits Menu");
+
+        mainInv.setItem(9+2, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Personal", "View your owned kits"));
+        mainInv.setItem(9+4, generateItem(new ItemStack(Material.IRON_SWORD), "Default", "View server predefined kits"));
+        mainInv.setItem(9+6, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Global", "View kits by other players"));
+
+        player.openInventory(mainInv);
+    }
+    public void viewCollection() {
+
+    }
+    public void viewKit(){
+
+    }
+
+    private ItemStack generateItem(ItemStack item, String name, String ... lores) {
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(name);
+        List<String> loresList = new ArrayList<>(Arrays.asList(lores));
+        meta.setLore(loresList);
+
+        item.setItemMeta(meta);
+        return item;
     }
 
     public int saveKitToCollection(KitCollection collection, Kit kitToSave, int kitIndex) {

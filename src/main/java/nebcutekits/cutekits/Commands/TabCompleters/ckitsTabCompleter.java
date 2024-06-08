@@ -32,6 +32,7 @@ public class ckitsTabCompleter implements TabCompleter {
             tabCompleteString.add("move");
             tabCompleteString.add("delete");
             tabCompleteString.add("shout");
+            tabCompleteString.add("view");
         }
         else if (args.length == 2)
         {
@@ -43,12 +44,12 @@ public class ckitsTabCompleter implements TabCompleter {
                 tabCompleteString.add("delete");
                 tabCompleteString.add("shout");
             } else if (Objects.equals(args[0], "save")) {
-                tabCompleteString.add("default");
                 tabCompleteString.add("current");
+                tabCompleteString.add("default");
                 tabCompleteString.add("global");
             } else if (Objects.equals(args[0], "load")) {
-                tabCompleteString.add("default");
                 tabCompleteString.add("personal");
+                tabCompleteString.add("default");
                 tabCompleteString.add("global");
             } else if (Objects.equals(args[0], "move")) {
                 tabCompleteString.add("1");
@@ -68,6 +69,10 @@ public class ckitsTabCompleter implements TabCompleter {
                 tabCompleteString.add("3");
                 tabCompleteString.add("4");
                 tabCompleteString.add("5");
+            } else if (Objects.equals(args[0], "view")) {
+                tabCompleteString.add("personal");
+                tabCompleteString.add("default");
+                tabCompleteString.add("global");
             }
         }
         else if (args.length == 3)

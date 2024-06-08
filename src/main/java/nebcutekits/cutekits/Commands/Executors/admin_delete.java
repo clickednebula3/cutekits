@@ -2,7 +2,6 @@ package nebcutekits.cutekits.Commands.Executors;
 
 import nebcutekits.cutekits.Utilities.ConfigReader;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,7 +38,7 @@ public class admin_delete {
                 confReader.defaultCollections.remove(collectionIndex);
                 sender.sendMessage("Deleted entire default collection.");
             } else {
-                int kitIndex = confReader.getDefaultKitIndexWithenCollection(kitName, collectionIndex);
+                int kitIndex = confReader.getDefaultKitIndexWithinCollection(kitName, collectionIndex);
                 if (kitIndex == -1) {
                     sender.sendMessage("Couldn't find default kit from kitName.");
                     return true;

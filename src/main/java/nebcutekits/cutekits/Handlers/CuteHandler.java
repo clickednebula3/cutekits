@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class CuteHandler implements Listener {
     CuteKits cuteKits;
@@ -30,5 +31,23 @@ public class CuteHandler implements Listener {
 
         hitterPlayer.sendActionBar("Your Reach: "+attackDistanceRounded);
         affectedPlayer.sendActionBar("Foe's Reach: "+attackDistanceRounded);
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getView().getTitle().equals("cKits Menu")) {
+            Player player = (Player) event.getWhoClicked();
+            int slot = event.getSlot();
+
+            if (slot == 9+2) {
+
+            } else if (slot == 9+4) {
+
+            } else if (slot == 9+6) {
+
+            }
+
+            event.setCancelled(true);
+        }
     }
 }
