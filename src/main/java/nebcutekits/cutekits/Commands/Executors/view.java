@@ -2,6 +2,7 @@ package nebcutekits.cutekits.Commands.Executors;
 
 import nebcutekits.cutekits.Utilities.ConfigReader;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -98,40 +99,38 @@ public class view {
             {
                 if (args.length > 3 && Objects.equals(args[2], "player")) {
                     String kitOwnerName = args[3];//could be invalid
-                    Player kitOwner = (Player) Bukkit.getOfflinePlayer(kitOwnerName);
-                    if (kitOwner != null) {
-                        if (args.length > 5 && Objects.equals(args[4], "kit")) {
-                            int kitIndex = 0;
-                            try {
-                                kitIndex = Integer.parseInt(args[5]);
-                                kitIndex--;
-                            } catch (NumberFormatException ignored) {}
-                            int viewResult = confReader.viewPlayerKit(player, kitOwner, kitIndex);
-                            if (viewResult == -1) {
-                                sender.sendMessage(kitOwnerName+" doesn't have a kits collection.");
-                            } else if (viewResult == -2) {
-                                sender.sendMessage(kitOwnerName+" doesn't have any kits.");
-                            } else {
-                                viewResult++;
-                                sender.sendMessage("Viewing "+kitOwnerName+"'s global kit "+viewResult);
-                            }
+                    OfflinePlayer kitOwner = Bukkit.getOfflinePlayer(kitOwnerName);
+                    if (args.length > 5 && Objects.equals(args[4], "kit")) {
+                        int kitIndex = 0;
+                        try {
+                            kitIndex = Integer.parseInt(args[5]);
+                            kitIndex--;
+                        } catch (NumberFormatException ignored) {
+                        }
+                        int viewResult = confReader.viewPlayerKit(player, kitOwner, kitIndex);
+                        if (viewResult == -1) {
+                            sender.sendMessage(kitOwnerName + " doesn't have a kits collection.");
+                        } else if (viewResult == -2) {
+                            sender.sendMessage(kitOwnerName + " doesn't have any kits.");
                         } else {
-                            int pageIndex = 0;
-                            if (args.length > 5 && Objects.equals(args[4], "page")) {
-                                try {
-                                    pageIndex = Integer.parseInt(args[5]);
-                                    pageIndex--;
-                                } catch (NumberFormatException ignored) {}
-                            }
-                            int viewResult = confReader.viewPlayerCollection(player, kitOwner, pageIndex);
-                            if (viewResult == -1) {
-                                sender.sendMessage("The selected player doesn't have any kits.");
-                            } else {
-                                sender.sendMessage("Viewing "+kitOwnerName+"'s global collection page "+pageIndex);
-                            }
+                            viewResult++;
+                            sender.sendMessage("Viewing " + kitOwnerName + "'s global kit " + viewResult);
                         }
                     } else {
-                        sender.sendMessage("Global Player not found.");
+                        int pageIndex = 0;
+                        if (args.length > 5 && Objects.equals(args[4], "page")) {
+                            try {
+                                pageIndex = Integer.parseInt(args[5]);
+                                pageIndex--;
+                            } catch (NumberFormatException ignored) {
+                            }
+                        }
+                        int viewResult = confReader.viewPlayerCollection(player, kitOwner, pageIndex);
+                        if (viewResult == -1) {
+                            sender.sendMessage("The selected player doesn't have any kits.");
+                        } else {
+                            sender.sendMessage("Viewing " + kitOwnerName + "'s global collection page " + pageIndex);
+                        }
                     }
 
                 }

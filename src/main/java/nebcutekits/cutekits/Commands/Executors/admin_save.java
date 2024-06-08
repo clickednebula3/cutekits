@@ -2,6 +2,7 @@ package nebcutekits.cutekits.Commands.Executors;
 
 import nebcutekits.cutekits.Utilities.ConfigReader;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -83,14 +84,7 @@ public class admin_save {
                     sender.sendMessage("Not enough arguments. Check syntax with '/ckits help admin save'");
                     return true;
                 }
-                Player globalPlayer = Bukkit.getServer().getPlayer(args[5]);
-                if (globalPlayer == null) {
-                    globalPlayer = Bukkit.getServer().getOfflinePlayer(args[5]).getPlayer();
-                }
-                if (globalPlayer == null) {
-                    sender.sendMessage("Global Player not found.");
-                    return true;
-                }
+                OfflinePlayer globalPlayer = Bukkit.getServer().getOfflinePlayer(args[5]);
                 int kitIndex = 99;
                 if (args.length >= 7) {
                     try {
@@ -195,14 +189,7 @@ public class admin_save {
                     sender.sendMessage("Not enough arguments. Check syntax with '/ckits help admin save'");
                     return true;
                 }
-                Player fromPlayer = Bukkit.getServer().getPlayer(args[5]);
-                if (fromPlayer == null) {
-                    fromPlayer = Bukkit.getServer().getOfflinePlayer(args[5]).getPlayer();
-                }
-                if (fromPlayer == null) {
-                    sender.sendMessage("Global Player not found.");
-                    return true;
-                }
+                OfflinePlayer fromPlayer = Bukkit.getServer().getOfflinePlayer(args[5]);
                 int fromKitIndex = 0;
                 if (args.length >= 7) {
                     try {

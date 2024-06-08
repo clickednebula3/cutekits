@@ -92,7 +92,7 @@ public class CuteHandler implements Listener {
 
                 if (slot < 9*3) {
                     if (player.getName().equals(collectionOwner)) { player.performCommand("ck view personal kit " + (pageIndex*9*3 + slot+1)); }
-                    else { player.performCommand("ck view global " + collectionOwner + " kit " + (pageIndex*9*3 + slot+1)); }
+                    else { player.performCommand("ck view global player " + collectionOwner + " kit " + (pageIndex*9*3 + slot+1)); }
                 }
                 if (slot == (9*3) && pageIndex <= 0) {
                     if (player.getName().equals(collectionOwner)) { player.performCommand("ck view"); }

@@ -2,6 +2,7 @@ package nebcutekits.cutekits.Commands.Executors;
 
 import nebcutekits.cutekits.Utilities.ConfigReader;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -70,14 +71,7 @@ public class load {
                 return true;
             }
             String globalPlayerName = args[2];
-            Player globalPlayer = Bukkit.getServer().getPlayer(globalPlayerName);
-            if (globalPlayer == null) {
-                globalPlayer = Bukkit.getServer().getOfflinePlayer(globalPlayerName).getPlayer();
-            }
-            if (globalPlayer == null) {
-                sender.sendMessage("Global Player not found.");
-                return true;
-            }
+            OfflinePlayer globalPlayer = Bukkit.getServer().getOfflinePlayer(globalPlayerName);
 
             int kitIndex = 0;
             if (args.length >= 4) {

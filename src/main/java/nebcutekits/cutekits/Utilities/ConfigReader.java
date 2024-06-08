@@ -3,6 +3,7 @@ package nebcutekits.cutekits.Utilities;
 import nebcutekits.cutekits.CuteKits;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -123,6 +124,14 @@ public class ConfigReader {
     }
 
     public int getPlayerCollectionIndex(Player player) {
+        for (int i = 0; i< playerCollections.size(); i++) {
+            if (Objects.equals(playerCollections.get(i).ownerUUID, player.getUniqueId().toString())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public int getPlayerCollectionIndex(OfflinePlayer player) {
         for (int i = 0; i< playerCollections.size(); i++) {
             if (Objects.equals(playerCollections.get(i).ownerUUID, player.getUniqueId().toString())) {
                 return i;
@@ -264,6 +273,27 @@ public class ConfigReader {
 
         return collectionIndex;
     }
+    public int viewPlayerCollection(Player player, OfflinePlayer collectionOwner, int page) {
+        int collectionIndex = getPlayerCollectionIndex(collectionOwner);
+        if (collectionIndex < 0) { return collectionIndex; }
+        String title = "cKits Player Collection "+collectionOwner.getName()+" "+page;
+        Inventory mainInv = Bukkit.createInventory(player, 9*4, title);
+
+        for (int i=0; i<9*3; i++) {
+            int kitIndex = page*3*9 + i;
+            if (kitIndex < playerCollections.get(collectionIndex).Kits.size()) {
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Player Kit "+(kitIndex+1), "View this kit"));
+            } else {
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
+            }
+        }
+
+        mainInv.setItem(9*3, generateItem(new ItemStack(Material.ARROW), "Back"));
+        mainInv.setItem(9*3+8, generateItem(new ItemStack(Material.ARROW), "Next"));
+        player.openInventory(mainInv);
+
+        return collectionIndex;
+    }
     public int viewDefaultCollection(Player player, String collectionName, int page) {
         int collectionIndex = getDefaultCollectionIndex(collectionName);//can fail
         if (collectionIndex < 0) { return collectionIndex; }
@@ -275,7 +305,7 @@ public class ConfigReader {
             if (kitIndex < defaultCollections.get(collectionIndex).Kits.size()) {
                 mainInv.setItem(i, generateItem(new ItemStack(Material.IRON_SWORD), "Default Kit "+defaultCollections.get(collectionIndex).Kits.get(kitIndex).kitName, "View this kit"));
             } else {
-                mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS), " "));
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
             }
         }
 
@@ -286,6 +316,35 @@ public class ConfigReader {
         return collectionIndex;
     }
     public int viewPlayerKit(Player player, Player kitOwner, int kitIndex){
+        String title = "cKits Player Kit "+kitOwner.getName()+" "+(kitIndex+1);
+        Inventory mainInv = Bukkit.createInventory(player, 9*6, title);
+
+        int collectionIndex = getPlayerCollectionIndex(kitOwner);
+        if (collectionIndex == -1) { return -1; }
+
+        KitCollection playerCollection = playerCollections.get(collectionIndex);
+
+        if (kitIndex < 0) { kitIndex = 0; }
+        if (kitIndex >= playerCollection.Kits.size()) { kitIndex = playerCollection.Kits.size()-1; }
+        if (kitIndex < 0) {
+            return -2; //player got no kits
+        }
+
+        Kit kitToView = playerCollection.Kits.get(kitIndex);
+        mainInv.setContents(kitToView.inventory);
+
+        mainInv.setItem((9*5)+8, generateItem(new ItemStack(Material.LIME_WOOL), "Load Kit"));
+        mainInv.setItem((9*5)+7, generateItem(new ItemStack(Material.YELLOW_WOOL), "Save Kit"));
+        if (player == kitOwner) {
+            mainInv.setItem((9*5)+6, generateItem(new ItemStack(Material.ORANGE_WOOL), "Shout Kit", "Sends a button in chat to", "help others save/load this kit."));
+            mainInv.setItem((9*5)+5, generateItem(new ItemStack(Material.RED_WOOL), "Delete Kit", "Will be lost permanently."));
+        }
+        mainInv.setItem((9*5), generateItem(new ItemStack(Material.REDSTONE_BLOCK), "Back"));
+
+        player.openInventory(mainInv);
+        return kitIndex;
+    }
+    public int viewPlayerKit(Player player, OfflinePlayer kitOwner, int kitIndex){
         String title = "cKits Player Kit "+kitOwner.getName()+" "+(kitIndex+1);
         Inventory mainInv = Bukkit.createInventory(player, 9*6, title);
 
@@ -579,8 +638,76 @@ public class ConfigReader {
         writeConfig();
         return toKitIndex; //added fromPlayer kit to toPlayer kits
     }
+    public int saveGlobalKitToPlayerKit(OfflinePlayer fromPlayer, int fromKitIndex, Player toPlayer, int toKitIndex) {
+        int fromCollectionIndex = getPlayerCollectionIndex(fromPlayer);
+        if (fromCollectionIndex == -1) {
+            return -1; //couldn't find fromPlayer's collection
+        }
+
+        if (fromKitIndex < 0) { fromKitIndex = 0; }
+        if (fromKitIndex >= playerCollections.get(fromCollectionIndex).Kits.size()) { fromKitIndex = playerCollections.get(fromCollectionIndex).Kits.size()-1; }
+        if (fromKitIndex < 0) {
+            return -2; //fromPlayer doesn't have any kits
+        }
+
+        Kit kitToAdd = playerCollections.get(fromCollectionIndex).Kits.get(fromKitIndex);
+
+        int toCollectionIndex = getPlayerCollectionIndex(toPlayer);
+
+        if (toCollectionIndex == -1) {
+            KitCollection collectionToAdd = new KitCollection(toPlayer);
+            collectionToAdd.Kits.add(kitToAdd);
+            playerCollections.add(collectionToAdd);
+            writeConfig();
+            return -3; //created collection for toPlayer
+        }
+
+        if (toKitIndex < 0) { toKitIndex = 0; }
+        if (toKitIndex >= playerCollections.get(toCollectionIndex).Kits.size()) {
+            playerCollections.get(toCollectionIndex).Kits.add(kitToAdd);
+            writeConfig();
+            return -4; //added new kit for toPlayer
+        }
+
+        playerCollections.get(toCollectionIndex).Kits.set(toKitIndex, kitToAdd);
+        writeConfig();
+        return toKitIndex; //added fromPlayer kit to toPlayer kits
+    }
 
     public int saveGlobalKitToDefaultKit(Player globalPlayer, int fromKitIndex, String collectionName, String kitName) {
+        int fromCollectionIndex = getPlayerCollectionIndex(globalPlayer);
+        if (fromCollectionIndex == -1) {
+            return -1; //did not find player's collection
+        }
+        if (fromKitIndex < 0) { fromKitIndex = 0; }
+        if (fromKitIndex >= playerCollections.get(fromCollectionIndex).Kits.size()) { fromKitIndex = playerCollections.get(fromCollectionIndex).Kits.size()-1; }
+        if (fromKitIndex < 0) {
+            return -2; //player got no kits
+        }
+        if (getDefaultKitNames().contains(kitName.toLowerCase())) {
+            return -5; //kitname already exists somewhere
+        }
+
+        Kit kitToAdd = playerCollections.get(fromCollectionIndex).Kits.get(fromKitIndex);
+        kitToAdd.kitName = kitName;
+
+        int collectionIndex = getDefaultCollectionIndex(collectionName);
+        if (collectionIndex == -1) {
+            KitCollection collectionToAdd = new KitCollection(collectionName);
+            collectionToAdd.Kits.add(kitToAdd);
+            defaultCollections.add(collectionToAdd);
+
+            return -3; //created collection and saved its first kit
+        }
+
+        defaultCollections.get(collectionIndex).Kits.add(kitToAdd);
+        int kitIndex = getDefaultKitIndex(kitName);
+        if (kitIndex == -1) {
+            return -4; //somehow I can't find the kit I just added...
+        }
+        return kitIndex; //found collection and added kit
+    }
+    public int saveGlobalKitToDefaultKit(OfflinePlayer globalPlayer, int fromKitIndex, String collectionName, String kitName) {
         int fromCollectionIndex = getPlayerCollectionIndex(globalPlayer);
         if (fromCollectionIndex == -1) {
             return -1; //did not find player's collection
@@ -643,6 +770,35 @@ public class ConfigReader {
 
         return toKitIndex;
     }
+    public int saveGlobalKit(OfflinePlayer globalPlayer, Player selfPlayer, int kitIndex, int toKitIndex) {
+        int collectionIndex = getPlayerCollectionIndex(globalPlayer);
+        if (collectionIndex == -1) { return -1; }
+        int myCollectionIndex = getPlayerCollectionIndex(selfPlayer);
+
+        if (kitIndex < 0) { kitIndex = 0; }
+        if (kitIndex >= playerCollections.get(collectionIndex).Kits.size()) {
+            kitIndex = playerCollections.get(collectionIndex).Kits.size()-1;
+        }
+        if (toKitIndex < 0) { toKitIndex = 0; }
+
+        Kit kitToSave = playerCollections.get(collectionIndex).Kits.get(kitIndex);
+
+        if (myCollectionIndex == -1) {
+            List<Kit> kitListToCreate = new ArrayList<>();
+            kitListToCreate.add(kitToSave);
+            KitCollection collectionToAdd = new KitCollection(selfPlayer, kitListToCreate);
+            playerCollections.add(collectionToAdd);
+        } else {
+            if (toKitIndex >= playerCollections.get(myCollectionIndex).Kits.size()) {
+                playerCollections.get(myCollectionIndex).Kits.add(kitToSave);
+                return -2;
+            } else {
+                playerCollections.get(myCollectionIndex).Kits.set(toKitIndex, kitToSave);
+            }
+        }
+
+        return toKitIndex;
+    }
 
     public int loadDefaultKit(Player player, String kitName) {
         int collectionIndex = getDefaultCollectionIndexUsingKitName(kitName);
@@ -673,6 +829,19 @@ public class ConfigReader {
     }
 
     public int loadGlobalKit(Player globalPlayer, Player selfPlayer, int kitIndex) {
+        int collectionIndex = getPlayerCollectionIndex(globalPlayer);
+        if (collectionIndex == -1) { return -1; }
+
+        KitCollection personalCollection = playerCollections.get(collectionIndex);
+
+        if (kitIndex < 0) { kitIndex = 0; }
+        if (kitIndex >= personalCollection.Kits.size()) { kitIndex = personalCollection.Kits.size()-1; }
+        Kit kitToApply = personalCollection.Kits.get(kitIndex);
+
+        selfPlayer.getInventory().setContents(kitToApply.inventory);
+        return kitIndex;
+    }
+    public int loadGlobalKit(OfflinePlayer globalPlayer, Player selfPlayer, int kitIndex) {
         int collectionIndex = getPlayerCollectionIndex(globalPlayer);
         if (collectionIndex == -1) { return -1; }
 
