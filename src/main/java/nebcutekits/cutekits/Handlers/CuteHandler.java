@@ -1,6 +1,7 @@
 package nebcutekits.cutekits.Handlers;
 
 import nebcutekits.cutekits.CuteKits;
+import nebcutekits.cutekits.Utilities.ConfigReader;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -8,12 +9,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Objects;
 
 public class CuteHandler implements Listener {
     CuteKits cuteKits;
+    ConfigReader confReader;
 
-    public CuteHandler(CuteKits cuteKits) {
+    public CuteHandler(CuteKits cuteKits, ConfigReader confReader) {
         this.cuteKits = cuteKits;
+        this.confReader = confReader;
     }
 
     @EventHandler
@@ -39,6 +45,7 @@ public class CuteHandler implements Listener {
         if (title.startsWith("cKits")) {
             Player player = (Player) event.getWhoClicked();
             int slot = event.getSlot();
+            String[] titleArgs = title.split(" ");
 
             if (title.startsWith("cKits Menu"))
             {
@@ -48,46 +55,101 @@ public class CuteHandler implements Listener {
             }
             else if (title.startsWith("cKits All Global Collections"))
             {
+                int pageIndex = 0;
+                try { pageIndex = Integer.parseInt(titleArgs[5]); } catch (NumberFormatException ignored) {}
 
+                if (slot < 9*3) {
+                    ItemStack item = event.getCurrentItem();
+                    if (item!=null) {
+                        player.performCommand("ck view global player "+item.getItemMeta().getDisplayName().split(" ")[1]);
+                    }
+                }
+                if (slot == (9*3) && pageIndex <= 0) { player.performCommand("ck view"); }
+                else if (slot == (9*3)) { player.performCommand("ck view global page "+(pageIndex-1)); }
+                if (slot == (9*3)+8) { player.performCommand("ck view global page "+(pageIndex+1)); }
             }
             else if (title.startsWith("cKits All Default Collections"))
             {
+                int pageIndex = 0;
+                try { pageIndex = Integer.parseInt(titleArgs[5]); } catch (NumberFormatException ignored) {}
 
+                if (slot < 9*3) {
+                    ItemStack item = event.getCurrentItem();
+                    if (item!=null) {
+                        player.performCommand("ck view default collection "+item.getItemMeta().getDisplayName().split(" ")[1]);
+                    }
+                }
+                if (slot == (9*3) && pageIndex <= 0) { player.performCommand("ck view"); }
+                else if (slot == (9*3)) { player.performCommand("ck view default page "+(pageIndex-1)); }
+                if (slot == (9*3)+8) { player.performCommand("ck view default page "+(pageIndex+1)); }
             }
             else if (title.startsWith("cKits Player Collection"))
             {
+                String collectionOwner = titleArgs[4];
+                int pageIndex = 0;
+                try { pageIndex = Integer.parseInt(titleArgs[5]); } catch (NumberFormatException ignored) {}
 
+                if (slot < 9*3) {
+                    if (player.getName().equals(collectionOwner)) { player.performCommand("ck view personal kit " + (pageIndex*9*3 + slot+1)); }
+                    else { player.performCommand("ck view global " + collectionOwner + " kit " + (pageIndex*9*3 + slot+1)); }
+                }
+                if (slot == (9*3) && pageIndex <= 0) {
+                    if (player.getName().equals(collectionOwner)) { player.performCommand("ck view personal"); }
+                    else { player.performCommand("ck view global"); }
+                }
+                else if (slot == (9*3)) { player.performCommand("ck view global player "+collectionOwner+" page "+(pageIndex-1)); }
+                if (slot == (9*3)+8) { player.performCommand("ck view global player "+collectionOwner+" page "+(pageIndex+1)); }
             }
             else if (title.startsWith("cKits Default Collection"))
             {
+                String collectionName = titleArgs[4];
+                int pageIndex = 0;
+                try { pageIndex = Integer.parseInt(titleArgs[5]); } catch (NumberFormatException ignored) {}
 
+                if (slot < 9*3) {
+                    player.performCommand("ck view default collection " + collectionName + " kit " + (pageIndex*9*3 + slot+1));
+                }
+                if (slot == (9*3) && pageIndex <= 0) { player.performCommand("ck view default"); }
+                else if (slot == (9*3)) { player.performCommand("ck view default collection "+collectionName+" page "+(pageIndex-1)); }
+                if (slot == (9*3)+8) { player.performCommand("ck view default collection "+collectionName+" page "+(pageIndex+1)); }
             }
             else if (title.startsWith("cKits Player Kit"))
             {
+                String kitOwner = titleArgs[4];
+                int kitIndex = 0;
+                try { kitIndex = Integer.parseInt(titleArgs[5]); } catch (NumberFormatException ignored) {}
 
+                if (slot == (9*5)+8) { player.performCommand("ck load global "+kitOwner+" "+kitIndex); }
+                if (slot == (9*5)+7) { player.performCommand("ck save global "+kitOwner+" "+kitIndex); }
+                if (slot == (9*5)+6 && Objects.equals(kitOwner, player.getName())) { player.performCommand("ck shout "+kitIndex); }
+                if (slot == (9*5)) { player.performCommand("ck view global player "+kitOwner); }
             }
             else if (title.startsWith("cKits Default Kit"))
             {
-
+                String kitName = titleArgs[4];
+                String collectionName = confReader.defaultCollections.get(confReader.getDefaultCollectionIndexUsingKitName(kitName)).collectionName;
+                if (slot == (9*5)+8) { player.performCommand("ck load default "+kitName); }
+                if (slot == (9*5)+7) { player.performCommand("ck save default "+kitName); }
+                if (slot == (9*5)) { player.performCommand("ck view default collection "+collectionName); }
             }
 
             event.setCancelled(true);
         }
 
-        if (event.getView().getTitle().equals("cKits Menu")) {
-            Player player = (Player) event.getWhoClicked();
-            int slot = event.getSlot();
-
-            if (slot == 9+2) {
-                player.performCommand("ck view personal");
-            } else if (slot == 9+4) {
-                player.performCommand("ck view default");
-            } else if (slot == 9+6) {
-                player.performCommand("ck view global");
-            }
-
-            event.setCancelled(true);
-        }
+//        if (event.getView().getTitle().equals("cKits Menu")) {
+//            Player player = (Player) event.getWhoClicked();
+//            int slot = event.getSlot();
+//
+//            if (slot == 9+2) {
+//                player.performCommand("ck view personal");
+//            } else if (slot == 9+4) {
+//                player.performCommand("ck view default");
+//            } else if (slot == 9+6) {
+//                player.performCommand("ck view global");
+//            }
+//
+//            event.setCancelled(true);
+//        }
         if (event.getView().getTitle().startsWith("cKits Player")) {
             Player player = (Player) event.getWhoClicked();
             String collectionOwner = event.getView().getTitle().substring(13);

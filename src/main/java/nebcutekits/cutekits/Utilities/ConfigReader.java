@@ -214,7 +214,7 @@ public class ConfigReader {
         for (int i=0; i<9*3; i++) {
             int collectionIndex = page*9*3 + i;
             if (collectionIndex < playerCollections.size()) {
-                mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Collection "+playerCollections.get(collectionIndex).collectionName, "View this collection"));
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GOLD_BLOCK), "Collection "+playerCollections.get(collectionIndex).collectionName, "View this collection"));
             } else {
                 mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
             }
@@ -230,7 +230,7 @@ public class ConfigReader {
         for (int i=0; i<9*3; i++) {
             int collectionIndex = page*3*9 + i;
             if (collectionIndex < defaultCollections.size()) {
-                mainInv.setItem(i, generateItem(new ItemStack(Material.IRON_SWORD), "Collection "+defaultCollections.get(collectionIndex).collectionName, "View this collection"));
+                mainInv.setItem(i, generateItem(new ItemStack(Material.IRON_BLOCK), "Collection "+defaultCollections.get(collectionIndex).collectionName, "View this collection"));
             } else {
                 mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
             }
@@ -248,7 +248,7 @@ public class ConfigReader {
         for (int i=0; i<9*3; i++) {
             int kitIndex = page*3*9 + i;
             if (kitIndex < playerCollections.get(collectionIndex).Kits.size()) {
-                mainInv.setItem(i, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Player Kit "+kitIndex, "View this kit"));
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Player Kit "+kitIndex, "View this kit"));
             } else {
                 mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
             }
@@ -297,8 +297,10 @@ public class ConfigReader {
         Kit kitToView = playerCollection.Kits.get(kitIndex);
         mainInv.setContents(kitToView.inventory);
 
-        mainInv.setItem((9*5)+8, generateItem(new ItemStack(Material.GREEN_DYE), "Load Kit"));
-        mainInv.setItem((9*5), generateItem(new ItemStack(Material.ARROW), "Back"));
+        mainInv.setItem((9*5)+8, generateItem(new ItemStack(Material.LIME_WOOL), "Load Kit"));
+        mainInv.setItem((9*5)+7, generateItem(new ItemStack(Material.YELLOW_WOOL), "Save Kit"));
+        if (player == kitOwner) { mainInv.setItem((9*5)+7, generateItem(new ItemStack(Material.ORANGE_WOOL), "Shout Kit", "Sends a button in chat to", "help others save/load this kit.")); }
+        mainInv.setItem((9*5), generateItem(new ItemStack(Material.REDSTONE_BLOCK), "Back"));
 
         player.openInventory(mainInv);
         return kitIndex;
@@ -314,8 +316,9 @@ public class ConfigReader {
         Kit kitToView = defaultCollections.get(collectionIndex).Kits.get(kitIndex);
         mainInv.setContents(kitToView.inventory);
 
-        mainInv.setItem((9*5)+8, generateItem(new ItemStack(Material.GREEN_DYE), "Load Kit"));
-        mainInv.setItem((9*5), generateItem(new ItemStack(Material.ARROW), "Back"));
+        mainInv.setItem((9*5)+8, generateItem(new ItemStack(Material.LIME_WOOL), "Load Kit"));
+        mainInv.setItem((9*5)+7, generateItem(new ItemStack(Material.YELLOW_WOOL), "Save Kit"));
+        mainInv.setItem((9*5), generateItem(new ItemStack(Material.REDSTONE_BLOCK), "Back"));
 
         player.openInventory(mainInv);
         return kitIndex;

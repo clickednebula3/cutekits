@@ -32,7 +32,7 @@ public final class CuteKits extends JavaPlugin {
         this.getCommand("ckits").setTabCompleter(new ckitsTabCompleter(confReader));
         this.getCommand("ckadmin").setTabCompleter(new ckadminTabCompleter(confReader));
 
-        Bukkit.getPluginManager().registerEvents(new CuteHandler(this), this);
+        Bukkit.getPluginManager().registerEvents(new CuteHandler(this, confReader), this);
     }
 
     @Override
