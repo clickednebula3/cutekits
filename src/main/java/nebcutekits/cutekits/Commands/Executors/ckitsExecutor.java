@@ -30,7 +30,7 @@ public class ckitsExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (Objects.equals(args[0], "view")) {
+        if (args.length < 1 || Objects.equals(args[0], "view")) {
             return cmd_view.runCommand(sender, command, label, args);
         } else if (Objects.equals(args[0], "save")) {
             return cmd_save.runCommand(sender, command, label, args);

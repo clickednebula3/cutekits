@@ -32,7 +32,7 @@ public class save {
             }
             String kitName = args[2];
             int kitIndex = 99;
-            if (args.length >= 4) {
+            if (args.length > 3) {
                 try {
                     kitIndex = Integer.parseInt(args[3]);
                     kitIndex--;

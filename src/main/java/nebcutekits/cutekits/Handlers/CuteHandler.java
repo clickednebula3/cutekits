@@ -101,6 +101,7 @@ public class CuteHandler implements Listener {
                     if (player.getName().equals(collectionOwner)) { player.performCommand("ck view"); }
                     else { player.performCommand("ck view global"); }
                 }
+                if (slot == 9*3+7 && player.getName().equals(collectionOwner)) { player.performCommand("ck save current"); }
                 else if (slot == (9*3)) { player.performCommand("ck view global player "+collectionOwner+" page "+(pageIndex)); }
                 if (slot == (9*3)+8) { player.performCommand("ck view global player "+collectionOwner+" page "+(pageIndex+2)); }
             }

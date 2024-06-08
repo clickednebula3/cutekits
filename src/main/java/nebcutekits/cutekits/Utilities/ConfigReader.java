@@ -211,9 +211,9 @@ public class ConfigReader {
         String title = "cKits Menu";
         Inventory mainInv = Bukkit.createInventory(player, 9*3, title);
 
-        mainInv.setItem(9+2, generateItem(new ItemStack(Material.DIAMOND_BLOCK), "Personal", "View your owned kits"));
-        mainInv.setItem(9+4, generateItem(new ItemStack(Material.IRON_SWORD), "Default", "View server predefined kits"));
-        mainInv.setItem(9+6, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Global", "View kits by other players"));
+        mainInv.setItem(9+2, generateItem(new ItemStack(Material.DIAMOND), "Personal", "View your owned kits"));
+        mainInv.setItem(9+4, generateItem(new ItemStack(Material.IRON_INGOT), "Default", "View server predefined kits"));
+        mainInv.setItem(9+6, generateItem(new ItemStack(Material.GOLD_INGOT), "Global", "View kits by other players"));
         mainInv.setItem((9*2)+8, generateItem(new ItemStack(Material.SWEET_BERRIES), "Credits", "cuteKits is by clickednebula3 \"Nebby\"", "", "type '/ck help' for help and commands"));
         mainInv.setItem(9*2, generateItem(new ItemStack(Material.STRUCTURE_VOID), "Clear Inventory", "Irreversible Action.", "Deletes every item currently in your inventory."));
 
@@ -296,7 +296,9 @@ public class ConfigReader {
                 mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
             }
         }
-
+        if (player.getName().equals(collectionOwner.getName())) {
+            mainInv.setItem(9*3+7, generateItem(new ItemStack(Material.LIGHT_BLUE_WOOL), "Save current inventory"));
+        }
         mainInv.setItem(9*3, generateItem(new ItemStack(Material.ARROW), "Back"));
         mainInv.setItem(9*3+8, generateItem(new ItemStack(Material.ARROW), "Next"));
         player.openInventory(mainInv);
@@ -475,9 +477,10 @@ public class ConfigReader {
 
     public int saveDefaultKit(Player player, String kitName, int toKitIndex) {
         int collectionIndex = getDefaultCollectionIndexUsingKitName(kitName);
-        int toCollectionIndex = getPlayerCollectionIndex(player);
-        int kitIndex = getDefaultKitIndex(kitName);
         if (collectionIndex == -1) { return -1; }
+        int kitIndex = getDefaultKitIndex(kitName);
+        if (kitIndex == -1) { return -3; }
+        int toCollectionIndex = getPlayerCollectionIndex(player);
         if (toCollectionIndex == -1) {
             Kit kitToSave = defaultCollections.get(collectionIndex).Kits.get(kitIndex);
             List<Kit> kitListToCreate = new ArrayList<>();
@@ -486,9 +489,8 @@ public class ConfigReader {
             playerCollections.add(collectionToAdd);
             return -2;
         }
-        if (kitIndex == -1) { return -3; }
 
-        int savingResult = saveKitToCollection(defaultCollections.get(toCollectionIndex), defaultCollections.get(collectionIndex).Kits.get(kitIndex), toKitIndex);
+        int savingResult = saveKitToCollection(playerCollections.get(toCollectionIndex), defaultCollections.get(collectionIndex).Kits.get(kitIndex), toKitIndex);
 
         if (savingResult == -1) {
             return -4; //added kit
