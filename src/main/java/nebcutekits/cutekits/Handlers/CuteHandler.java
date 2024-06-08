@@ -54,8 +54,8 @@ public class CuteHandler implements Listener {
                 if (slot == 9+2) { player.performCommand("ck view personal"); }
                 else if (slot == 9+4) { player.performCommand("ck view default"); }
                 else if (slot == 9+6) { player.performCommand("ck view global"); }
-                else if (slot == 9*2) { player.getInventory().clear(); }
-                else if (slot == (9*2)+8) { player.playSound(player.getLocation(), Sound.ENTITY_FOX_SLEEP, 100, 100); }
+                else if (slot == 9*3) { player.getInventory().clear(); }
+                else if (slot == (9*3)+8) { player.playSound(player.getLocation(), Sound.ENTITY_FOX_SLEEP, 100, 100); }
             }
             else if (title.startsWith("cKits All Global Collections"))
             {
@@ -100,10 +100,12 @@ public class CuteHandler implements Listener {
                 if (slot == (9*3) && pageIndex <= 0) {
                     if (player.getName().equals(collectionOwner)) { player.performCommand("ck view"); }
                     else { player.performCommand("ck view global"); }
-                }
-                if (slot == 9*3+7 && player.getName().equals(collectionOwner)) { player.performCommand("ck save current"); }
-                else if (slot == (9*3)) { player.performCommand("ck view global player "+collectionOwner+" page "+(pageIndex)); }
+                } else if (slot == (9*3)) { player.performCommand("ck view global player "+collectionOwner+" page "+(pageIndex)); }
                 if (slot == (9*3)+8) { player.performCommand("ck view global player "+collectionOwner+" page "+(pageIndex+2)); }
+                if (slot == 9*3+7 && player.getName().equals(collectionOwner)) {
+                    player.performCommand("ck save current");
+                    player.performCommand("ck view personal");
+                }
             }
             else if (title.startsWith("cKits Default Collection"))
             {
@@ -130,7 +132,10 @@ public class CuteHandler implements Listener {
                 if (slot == (9*5)+8) { player.performCommand("ck load global "+kitOwner+" "+kitIndex); }
                 if (slot == (9*5)+7) { player.performCommand("ck save global "+kitOwner+" "+kitIndex); }
                 if (slot == (9*5)+6 && Objects.equals(kitOwner, player.getName())) { player.performCommand("ck shout "+kitIndex); }
-                if (slot == (9*5)+5 && Objects.equals(kitOwner, player.getName())) { player.performCommand("ck delete "+kitIndex); }
+                if (slot == (9*5)+5 && Objects.equals(kitOwner, player.getName())) {
+                    player.performCommand("ck delete "+kitIndex);
+                    player.performCommand("ck view personal");
+                }
                 if (slot == (9*5)) { player.performCommand("ck view global player "+kitOwner); }
             }
             else if (title.startsWith("cKits Default Kit"))
