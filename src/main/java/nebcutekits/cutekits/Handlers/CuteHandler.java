@@ -24,7 +24,7 @@ public class CuteHandler implements Listener {
         if (entity.getType() != EntityType.PLAYER || entityDamager.getType() != EntityType.PLAYER) { return; }
 
         double attackDistance = entityDamager.getLocation().distance(entity.getLocation());
-        double attackDistanceRounded = attackDistance % 0.01;
+        double attackDistanceRounded = Math.floor(attackDistance * 1000)/1000;
 
         Player hitterPlayer = (Player) entityDamager;
         Player affectedPlayer = (Player) entity;
@@ -40,12 +40,64 @@ public class CuteHandler implements Listener {
             int slot = event.getSlot();
 
             if (slot == 9+2) {
-
+                player.performCommand("ck view personal");
             } else if (slot == 9+4) {
-
+                player.performCommand("ck view default");
             } else if (slot == 9+6) {
-
+                player.performCommand("ck view global");
             }
+
+            event.setCancelled(true);
+        }
+        if (event.getView().getTitle().startsWith("cKits Player")) {
+            Player player = (Player) event.getWhoClicked();
+            String collectionOwner = event.getView().getTitle().substring(13);
+            int slot = event.getSlot();
+
+            if (slot < 9*3) {
+                if (player.getName().equals(collectionOwner)) {
+                    player.performCommand("ck view personal " + (slot + 1));
+                } else {
+                    player.performCommand("ck view global " + collectionOwner + " " + (slot + 1));
+                }
+            }
+            if (slot == (9*3)) {
+                player.performCommand("ck view");
+            }
+
+            event.setCancelled(true);
+        }
+        if (event.getView().getTitle().startsWith("cKits Personal Kit")) {
+            Player player = (Player) event.getWhoClicked();
+            int slot = event.getSlot();
+            int kitIndex = 0;
+
+            String kitIndexStr = event.getView().getTitle().substring(19);
+            try {
+                kitIndex = Integer.parseInt(kitIndexStr);
+                kitIndex--;
+            } catch (NumberFormatException ignored) {}
+
+            if (slot == (9*5)+8) {
+                player.performCommand("ck load personal "+kitIndex);
+            }
+            if (slot == (9*5)) {
+                player.performCommand("ck view personal");
+            }
+
+            event.setCancelled(true);
+        }
+        if (event.getView().getTitle().equals("cKits Default Collections"))
+        {
+            Player player = (Player) event.getWhoClicked();
+            int slot = event.getSlot();
+
+            event.setCancelled(true);
+        }
+        if (event.getView().getTitle().equals("cKits Global Collections"))
+        {
+            Player player = (Player) event.getWhoClicked();
+            int slot = event.getSlot();
 
             event.setCancelled(true);
         }

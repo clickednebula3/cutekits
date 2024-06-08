@@ -15,6 +15,7 @@ public class ckitsExecutor implements CommandExecutor {
     move cmd_move;
     delete cmd_delete;
     shout cmd_shout;
+    view cmd_view;
 
     public ckitsExecutor(ConfigReader confReader) {
         this.confReader = confReader;
@@ -24,6 +25,7 @@ public class ckitsExecutor implements CommandExecutor {
         cmd_move = new move(confReader);
         cmd_delete = new delete(confReader);
         cmd_shout = new shout(confReader);
+        cmd_view = new view(confReader);
     }
 
     @Override
@@ -40,6 +42,8 @@ public class ckitsExecutor implements CommandExecutor {
             return cmd_delete.runCommand(sender, command, label, args);
         } else if (Objects.equals(args[0], "shout")) {
             return cmd_shout.runCommand(sender, command, label, args);
+        } else if (Objects.equals(args[0], "view")) {
+            return cmd_view.runCommand(sender, command, label, args);
         } else if (Objects.equals(args[0], "items")) {
 
         } else {

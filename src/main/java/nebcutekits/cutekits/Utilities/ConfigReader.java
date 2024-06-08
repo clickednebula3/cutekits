@@ -207,11 +207,75 @@ public class ConfigReader {
 
         player.openInventory(mainInv);
     }
-    public void viewCollection() {
+    public void viewPlayerCollection(Player player, Player collectionOwner, int page) {
+        int collectionIndex = getPlayerCollectionIndex(collectionOwner);
+        Inventory mainInv = Bukkit.createInventory(player, 9*4, "cKits Player "+collectionOwner.getName());
 
+        for (int i=0; i<9*3; i++) {
+            int kitIndex = page*3*9 + i;
+            if (kitIndex < playerCollections.get(collectionIndex).Kits.size()) {
+                mainInv.setItem(i, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Player Kit "+kitIndex, "View this kit"));
+            } else {
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "Player Kit "+kitIndex));
+            }
+        }
+
+        mainInv.setItem(9*3, generateItem(new ItemStack(Material.ARROW), "Back"));
+        mainInv.setItem(9*3+8, generateItem(new ItemStack(Material.ARROW), "Next"));
+        player.openInventory(mainInv);
     }
-    public void viewKit(){
+    public void viewDefaultCollections(Player player, int page) {
+        Inventory mainInv = Bukkit.createInventory(player, 9*4, "cKits Default Collections");
 
+        for (int i=0; i<9*3; i++) {
+            int collectionIndex = 0;
+            if (collectionIndex < defaultCollections.size()) {
+                mainInv.setItem(i, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Collection "+defaultCollections.get(collectionIndex).collectionName, "View this collection"));
+            } else {
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
+            }
+        }
+
+        mainInv.setItem(9*3, generateItem(new ItemStack(Material.ARROW), "Back"));
+        mainInv.setItem(9*3+8, generateItem(new ItemStack(Material.ARROW), "Next"));
+        player.openInventory(mainInv);
+    }
+    public void viewGlobalCollections(Player player, int page) {
+        Inventory mainInv = Bukkit.createInventory(player, 9*4, "cKits Global Collections");
+
+        for (int i=0; i<9*3; i++) {
+            int collectionIndex = 0;
+            if (collectionIndex < playerCollections.size()) {
+                mainInv.setItem(i, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Collection "+playerCollections.get(collectionIndex).collectionName, "View this collection"));
+            } else {
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
+            }
+        }
+
+        mainInv.setItem(9*3, generateItem(new ItemStack(Material.ARROW), "Back"));
+        mainInv.setItem(9*3+8, generateItem(new ItemStack(Material.ARROW), "Next"));
+        player.openInventory(mainInv);
+    }
+    public int viewPlayerKit(Player player, int kitIndex){
+        Inventory mainInv = Bukkit.createInventory(player, 9*6, "cKits Personal Kit "+(kitIndex+1));
+
+        int collectionIndex = getPlayerCollectionIndex(player);
+        if (collectionIndex == -1) { return -1; }
+
+        KitCollection personalCollection = playerCollections.get(collectionIndex);
+
+        if (kitIndex < 0) { kitIndex = 0; }
+        if (kitIndex >= personalCollection.Kits.size()) { kitIndex = personalCollection.Kits.size()-1; }
+        if (kitIndex < 0) {
+            return -2; //player got no kits
+        }
+        Kit kitToView = personalCollection.Kits.get(kitIndex);
+        mainInv.setContents(kitToView.inventory);
+        mainInv.setItem((9*5)+8, generateItem(new ItemStack(Material.GREEN_DYE), "Load Kit"));
+        mainInv.setItem((9*5), generateItem(new ItemStack(Material.ARROW), "Back"));
+
+        player.openInventory(mainInv);
+        return kitIndex;
     }
 
     private ItemStack generateItem(ItemStack item, String name, String ... lores) {

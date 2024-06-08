@@ -20,13 +20,35 @@ public class view {
             sender.sendMessage("Only a player can run this command.");
             return true;
         }
+        Player player = (Player) sender;
 
         List<String> helpMessage = new ArrayList<>();
-        helpMessage.add("---- CuteKits Help ----");
 
         if (args.length > 1) {
             if (Objects.equals(args[1], "personal")) {
-                //view all my kits
+                if (args.length > 2) {
+                    int kitIndex = 0;
+                    if (args.length >= 3) {
+                        try {
+                            kitIndex = Integer.parseInt(args[2]);
+                            kitIndex--;
+                        } catch (NumberFormatException ignored) {}
+                    }
+                    int viewResult = confReader.viewPlayerKit(player, kitIndex);
+                    if (viewResult == -1) {
+                        sender.sendMessage("You don't have a kits collection. Learn how to make one with '/ckits help save'");
+                    } else if (viewResult == -2) {
+                        sender.sendMessage("You don't have any kits. Learn how to make one with '/ckits help save'");
+                    } else {
+                        viewResult++;
+                        sender.sendMessage("Viewing personal kit "+viewResult);
+                    }
+
+                } else {
+                    //view all my kits
+                    confReader.viewPlayerCollection(player, player, 0);
+                }
+
 
             } else if (Objects.equals(args[1], "default")) {
                 //view server kits
@@ -84,7 +106,7 @@ public class view {
 
             }
         } else {
-            confReader.viewMainMenu((Player) sender);
+            confReader.viewMainMenu(player);
         }
 
         for (String s : helpMessage) {

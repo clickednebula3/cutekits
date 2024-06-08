@@ -31,6 +31,13 @@ public class help {
                 helpMessage.add("/ckits load global <player name> <player kit number>");
                 helpMessage.add("Info: Loads a kit to your current inventory.");
 
+            } else if (Objects.equals(args[1], "view")) {
+                helpMessage.add("/ckits view");
+                helpMessage.add("/ckits view personal");
+                helpMessage.add("/ckits view default");
+                helpMessage.add("/ckits view global");
+                helpMessage.add("Info: Opens the Navigable cKits GUI.");
+
             } else if (Objects.equals(args[1], "move")) {
                 helpMessage.add("/ckits move <personal kit number> <personal kit number to override>");
                 helpMessage.add("Info: Changes the number of the kit");
@@ -100,6 +107,7 @@ public class help {
         } else {
             helpMessage.add("/ckits help save");
             helpMessage.add("/ckits help load");
+            helpMessage.add("/ckits help view");
             helpMessage.add("/ckits help move");
             helpMessage.add("/ckits help delete");
             helpMessage.add("/ckits help shout");
