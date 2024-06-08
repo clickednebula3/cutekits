@@ -21,18 +21,6 @@ public class view {
         }
         Player player = (Player) sender;
 
-//        helpMessage.add("/ckits view");
-//        helpMessage.add("/ckits view personal kit <personal kit number>");
-//        helpMessage.add("/ckits view personal page <page>");
-
-//        helpMessage.add("/ckits view default kit <kitname>");
-//        helpMessage.add("/ckits view default collection <collection> page <page>");
-//        helpMessage.add("/ckits view default page <page>");
-
-//        helpMessage.add("/ckits view global player <player name> kit <player kit number>");
-//        helpMessage.add("/ckits view global player <player name> page <page>");
-//        helpMessage.add("/ckits view global page <page>");
-
         if (args.length > 1) {
             if (Objects.equals(args[1], "personal"))
             {
@@ -110,7 +98,7 @@ public class view {
             {
                 if (args.length > 3 && Objects.equals(args[2], "player")) {
                     String kitOwnerName = args[3];//could be invalid
-                    Player kitOwner = Bukkit.getPlayer(kitOwnerName);
+                    Player kitOwner = (Player) Bukkit.getOfflinePlayer(kitOwnerName);
                     if (kitOwner != null) {
                         if (args.length > 5 && Objects.equals(args[4], "kit")) {
                             int kitIndex = 0;
@@ -162,52 +150,9 @@ public class view {
             } else {
                 confReader.viewMainMenu(player);
             }
+        } else {
+            confReader.viewMainMenu(player);
         }
-
-//        if (args.length > 1) {
-//            if (Objects.equals(args[1], "personal")) {
-//                if (args.length > 2) {
-//                    int kitIndex = 0;
-//                    if (args.length >= 3) {
-//                        try {
-//                            kitIndex = Integer.parseInt(args[2]);
-//                            kitIndex--;
-//                        } catch (NumberFormatException ignored) {}
-//                    }
-//                    int viewResult = confReader.viewPlayerKit(player, player, kitIndex);
-//                    if (viewResult == -1) {
-//                        sender.sendMessage("You don't have a kits collection. Learn how to make one with '/ckits help save'");
-//                    } else if (viewResult == -2) {
-//                        sender.sendMessage("You don't have any kits. Learn how to make one with '/ckits help save'");
-//                    } else {
-//                        viewResult++;
-//                        sender.sendMessage("Viewing personal kit "+viewResult);
-//                    }
-//
-//                } else {
-//                    //view all my kits
-//                    confReader.viewPlayerCollection(player, player, 0);
-//                }
-//
-//
-//            } else if (Objects.equals(args[1], "default")) {
-//                if (args.length > 2) {
-//                    int
-//                } else {
-//                    //view server kits
-//                    confReader.viewDefaultCollections(player, 0);
-//                }
-//
-//            } else if (Objects.equals(args[1], "global")) {
-//                //view list of player kits
-//
-//            } else {
-//                confReader.viewMainMenu(player);
-//            }
-//        } else {
-//            confReader.viewMainMenu(player);
-//        }
-
         return true;
     }
 }

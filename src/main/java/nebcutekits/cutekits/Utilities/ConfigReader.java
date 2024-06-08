@@ -199,7 +199,8 @@ public class ConfigReader {
     }
 
     public void viewMainMenu(Player player) {
-        Inventory mainInv = Bukkit.createInventory(player, 9*3, "cKits Menu");
+        String title = "cKits Menu";
+        Inventory mainInv = Bukkit.createInventory(player, 9*3, title);
 
         mainInv.setItem(9+2, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Personal", "View your owned kits"));
         mainInv.setItem(9+4, generateItem(new ItemStack(Material.IRON_SWORD), "Default", "View server predefined kits"));
@@ -209,7 +210,8 @@ public class ConfigReader {
         player.openInventory(mainInv);
     }
     public void viewAllGlobalCollections(Player player, int page) {
-        Inventory mainInv = Bukkit.createInventory(player, 9*4, "cKits All Global Collections "+page);
+        String title = "cKits All Global Collections "+page;
+        Inventory mainInv = Bukkit.createInventory(player, 9*4, title);
 
         for (int i=0; i<9*3; i++) {
             int collectionIndex = page*9*3 + i;
@@ -225,7 +227,8 @@ public class ConfigReader {
         player.openInventory(mainInv);
     }
     public void viewAllDefaultCollections(Player player, int page) {
-        Inventory mainInv = Bukkit.createInventory(player, 9*4, "cKits All Default Collections "+page);
+        String title = "cKits All Default Collections "+page;
+        Inventory mainInv = Bukkit.createInventory(player, 9*4, title);
 
         for (int i=0; i<9*3; i++) {
             int collectionIndex = page*3*9 + i;
@@ -243,12 +246,13 @@ public class ConfigReader {
     public int viewPlayerCollection(Player player, Player collectionOwner, int page) {
         int collectionIndex = getPlayerCollectionIndex(collectionOwner);
         if (collectionIndex < 0) { return collectionIndex; }
-        Inventory mainInv = Bukkit.createInventory(player, 9*4, "cKits Player Collection "+collectionOwner.getName()+" "+page);
+        String title = "cKits Player Collection "+collectionOwner.getName()+" "+page;
+        Inventory mainInv = Bukkit.createInventory(player, 9*4, title);
 
         for (int i=0; i<9*3; i++) {
             int kitIndex = page*3*9 + i;
             if (kitIndex < playerCollections.get(collectionIndex).Kits.size()) {
-                mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Player Kit "+kitIndex, "View this kit"));
+                mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Player Kit "+(kitIndex+1), "View this kit"));
             } else {
                 mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
             }
@@ -261,9 +265,10 @@ public class ConfigReader {
         return collectionIndex;
     }
     public int viewDefaultCollection(Player player, String collectionName, int page) {
-        int collectionIndex = getDefaultCollectionIndex(collectionName);//can fail todo account for that
+        int collectionIndex = getDefaultCollectionIndex(collectionName);//can fail
         if (collectionIndex < 0) { return collectionIndex; }
-        Inventory mainInv = Bukkit.createInventory(player, 9*4, "cKits Default Collection "+collectionName+" "+page);
+        String title = "cKits Default Collection "+collectionName+" "+page;
+        Inventory mainInv = Bukkit.createInventory(player, 9*4, title);
 
         for (int i=0; i<9*3; i++) {
             int kitIndex = page*9*3 + i;
@@ -281,7 +286,8 @@ public class ConfigReader {
         return collectionIndex;
     }
     public int viewPlayerKit(Player player, Player kitOwner, int kitIndex){
-        Inventory mainInv = Bukkit.createInventory(player, 9*6, "cKits Player Kit "+kitOwner.getName()+" "+(kitIndex+1));
+        String title = "cKits Player Kit "+kitOwner.getName()+" "+(kitIndex+1);
+        Inventory mainInv = Bukkit.createInventory(player, 9*6, title);
 
         int collectionIndex = getPlayerCollectionIndex(kitOwner);
         if (collectionIndex == -1) { return -1; }
@@ -299,14 +305,18 @@ public class ConfigReader {
 
         mainInv.setItem((9*5)+8, generateItem(new ItemStack(Material.LIME_WOOL), "Load Kit"));
         mainInv.setItem((9*5)+7, generateItem(new ItemStack(Material.YELLOW_WOOL), "Save Kit"));
-        if (player == kitOwner) { mainInv.setItem((9*5)+7, generateItem(new ItemStack(Material.ORANGE_WOOL), "Shout Kit", "Sends a button in chat to", "help others save/load this kit.")); }
+        if (player == kitOwner) {
+            mainInv.setItem((9*5)+6, generateItem(new ItemStack(Material.ORANGE_WOOL), "Shout Kit", "Sends a button in chat to", "help others save/load this kit."));
+            mainInv.setItem((9*5)+5, generateItem(new ItemStack(Material.RED_WOOL), "Delete Kit", "Will be lost permanently."));
+        }
         mainInv.setItem((9*5), generateItem(new ItemStack(Material.REDSTONE_BLOCK), "Back"));
 
         player.openInventory(mainInv);
         return kitIndex;
     }
     public int viewDefaultKit(Player player, String kitName){
-        Inventory mainInv = Bukkit.createInventory(player, 9*6, "cKits Default Kit "+kitName);
+        String title = "cKits Default Kit "+kitName;
+        Inventory mainInv = Bukkit.createInventory(player, 9*6, title);
 
         int collectionIndex = getDefaultCollectionIndexUsingKitName(kitName);
         int kitIndex = getDefaultKitIndex(kitName);

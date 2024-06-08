@@ -135,6 +135,12 @@ public class ckitsTabCompleter implements TabCompleter {
                     tabCompleteString.add("4");
                     tabCompleteString.add("5");
                 }
+            } else if (Objects.equals(args[0], "load") && Objects.equals(args[1], "global")) {
+                tabCompleteString.add("1");
+                tabCompleteString.add("2");
+                tabCompleteString.add("3");
+                tabCompleteString.add("4");
+                tabCompleteString.add("5");
             } else if (Objects.equals(args[0], "view")) {
                 if (Objects.equals(args[1], "personal") && (Objects.equals(args[2], "kit") || Objects.equals(args[2], "page"))) {
                     tabCompleteString.add("1");
