@@ -211,10 +211,11 @@ public class ConfigReader {
         String title = "cKits Menu";
         Inventory mainInv = Bukkit.createInventory(player, 9*3, title);
 
-        mainInv.setItem(9+2, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Personal", "View your owned kits"));
+        mainInv.setItem(9+2, generateItem(new ItemStack(Material.DIAMOND_BLOCK), "Personal", "View your owned kits"));
         mainInv.setItem(9+4, generateItem(new ItemStack(Material.IRON_SWORD), "Default", "View server predefined kits"));
         mainInv.setItem(9+6, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Global", "View kits by other players"));
-        mainInv.setItem((9*2)+8, generateItem(new ItemStack(Material.SWEET_BERRIES), "Credits", "cuteKits is by clickednebula3 \"Nebby\""));
+        mainInv.setItem((9*2)+8, generateItem(new ItemStack(Material.SWEET_BERRIES), "Credits", "cuteKits is by clickednebula3 \"Nebby\"", "", "type '/ck help' for help and commands"));
+        mainInv.setItem(9*2, generateItem(new ItemStack(Material.STRUCTURE_VOID), "Clear Inventory", "Irreversible Action.", "Deletes every item currently in your inventory."));
 
         player.openInventory(mainInv);
     }
@@ -261,7 +262,11 @@ public class ConfigReader {
         for (int i=0; i<9*3; i++) {
             int kitIndex = page*3*9 + i;
             if (kitIndex < playerCollections.get(collectionIndex).Kits.size()) {
-                mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Player Kit "+(kitIndex+1), "View this kit"));
+                if (player.getName().equals(collectionOwner.getName())) {
+                    mainInv.setItem(i, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Player Kit " + (kitIndex + 1), "View this kit"));
+                } else {
+                    mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Player Kit " + (kitIndex + 1), "View this kit"));
+                }
             } else {
                 mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
             }
@@ -282,7 +287,11 @@ public class ConfigReader {
         for (int i=0; i<9*3; i++) {
             int kitIndex = page*3*9 + i;
             if (kitIndex < playerCollections.get(collectionIndex).Kits.size()) {
-                mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Player Kit "+(kitIndex+1), "View this kit"));
+                if (player.getName().equals(collectionOwner.getName())) {
+                    mainInv.setItem(i, generateItem(new ItemStack(Material.DIAMOND_SWORD), "Player Kit " + (kitIndex + 1), "View this kit"));
+                } else {
+                    mainInv.setItem(i, generateItem(new ItemStack(Material.GOLDEN_SWORD), "Player Kit " + (kitIndex + 1), "View this kit"));
+                }
             } else {
                 mainInv.setItem(i, generateItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "));
             }

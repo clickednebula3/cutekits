@@ -30,8 +30,8 @@ public class ckitsExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length < 1 || Objects.equals(args[0], "help")) {
-            return cmd_help.runCommand(sender, command, label, args);
+        if (Objects.equals(args[0], "view")) {
+            return cmd_view.runCommand(sender, command, label, args);
         } else if (Objects.equals(args[0], "save")) {
             return cmd_save.runCommand(sender, command, label, args);
         } else if (Objects.equals(args[0], "load")) {
@@ -42,8 +42,8 @@ public class ckitsExecutor implements CommandExecutor {
             return cmd_delete.runCommand(sender, command, label, args);
         } else if (Objects.equals(args[0], "shout")) {
             return cmd_shout.runCommand(sender, command, label, args);
-        } else if (Objects.equals(args[0], "view")) {
-            return cmd_view.runCommand(sender, command, label, args);
+        } else if (Objects.equals(args[0], "help")) {
+            return cmd_help.runCommand(sender, command, label, args);
         } else if (Objects.equals(args[0], "items")) {
 
         } else {

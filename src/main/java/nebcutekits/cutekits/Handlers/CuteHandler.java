@@ -2,6 +2,7 @@ package nebcutekits.cutekits.Handlers;
 
 import nebcutekits.cutekits.CuteKits;
 import nebcutekits.cutekits.Utilities.ConfigReader;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -53,6 +54,8 @@ public class CuteHandler implements Listener {
                 if (slot == 9+2) { player.performCommand("ck view personal"); }
                 else if (slot == 9+4) { player.performCommand("ck view default"); }
                 else if (slot == 9+6) { player.performCommand("ck view global"); }
+                else if (slot == 9*2) { player.getInventory().clear(); }
+                else if (slot == (9*2)+8) { player.playSound(player.getLocation(), Sound.ENTITY_FOX_SLEEP, 100, 100); }
             }
             else if (title.startsWith("cKits All Global Collections"))
             {
