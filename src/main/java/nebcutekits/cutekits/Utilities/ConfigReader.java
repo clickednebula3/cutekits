@@ -214,8 +214,8 @@ public class ConfigReader {
         mainInv.setItem(9+2, generateItem(new ItemStack(Material.DIAMOND), "Personal", "View your owned kits"));
         mainInv.setItem(9+4, generateItem(new ItemStack(Material.IRON_INGOT), "Default", "View server predefined kits"));
         mainInv.setItem(9+6, generateItem(new ItemStack(Material.GOLD_INGOT), "Global", "View kits by other players"));
-        mainInv.setItem((9*3)+8, generateItem(new ItemStack(Material.SWEET_BERRIES), "Credits", "cuteKits is by clickednebula3 \"Nebby\"", "", "type '/ck help' for help and commands"));
-        mainInv.setItem(9*3, generateItem(new ItemStack(Material.STRUCTURE_VOID), "Clear Inventory", "Irreversible Action.", "Deletes every item currently in your inventory."));
+        mainInv.setItem((9*2)+8, generateItem(new ItemStack(Material.SWEET_BERRIES), "Credits", "cuteKits is by clickednebula3 \"Nebby\"", "", "type '/ck help' for help and commands"));
+        mainInv.setItem(9*2, generateItem(new ItemStack(Material.STRUCTURE_VOID), "Clear Inventory", "Irreversible Action.", "Deletes every item currently in your inventory."));
 
         player.openInventory(mainInv);
     }
