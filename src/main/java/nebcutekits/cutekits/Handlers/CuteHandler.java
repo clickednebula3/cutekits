@@ -34,7 +34,46 @@ public class CuteHandler implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {//todo handle all these inventories
+        String title = event.getView().getTitle();
+        if (title.startsWith("cKits")) {
+            Player player = (Player) event.getWhoClicked();
+            int slot = event.getSlot();
+
+            if (title.startsWith("cKits Menu"))
+            {
+                if (slot == 9+2) { player.performCommand("ck view personal"); }
+                else if (slot == 9+4) { player.performCommand("ck view default"); }
+                else if (slot == 9+6) { player.performCommand("ck view global"); }
+            }
+            else if (title.startsWith("cKits All Global Collections"))
+            {
+
+            }
+            else if (title.startsWith("cKits All Default Collections"))
+            {
+
+            }
+            else if (title.startsWith("cKits Player Collection"))
+            {
+
+            }
+            else if (title.startsWith("cKits Default Collection"))
+            {
+
+            }
+            else if (title.startsWith("cKits Player Kit"))
+            {
+
+            }
+            else if (title.startsWith("cKits Default Kit"))
+            {
+
+            }
+
+            event.setCancelled(true);
+        }
+
         if (event.getView().getTitle().equals("cKits Menu")) {
             Player player = (Player) event.getWhoClicked();
             int slot = event.getSlot();

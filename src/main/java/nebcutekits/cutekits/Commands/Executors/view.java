@@ -1,12 +1,11 @@
 package nebcutekits.cutekits.Commands.Executors;
 
 import nebcutekits.cutekits.Utilities.ConfigReader;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class view {
@@ -22,19 +21,28 @@ public class view {
         }
         Player player = (Player) sender;
 
-        List<String> helpMessage = new ArrayList<>();
+//        helpMessage.add("/ckits view");
+//        helpMessage.add("/ckits view personal kit <personal kit number>");
+//        helpMessage.add("/ckits view personal page <page>");
+
+//        helpMessage.add("/ckits view default kit <kitname>");
+//        helpMessage.add("/ckits view default collection <collection> page <page>");
+//        helpMessage.add("/ckits view default page <page>");
+
+//        helpMessage.add("/ckits view global player <player name> kit <player kit number>");
+//        helpMessage.add("/ckits view global player <player name> page <page>");
+//        helpMessage.add("/ckits view global page <page>");
 
         if (args.length > 1) {
-            if (Objects.equals(args[1], "personal")) {
-                if (args.length > 2) {
+            if (Objects.equals(args[1], "personal"))
+            {
+                if (args.length > 3 && Objects.equals(args[2], "kit")) {
                     int kitIndex = 0;
-                    if (args.length >= 3) {
-                        try {
-                            kitIndex = Integer.parseInt(args[2]);
-                            kitIndex--;
-                        } catch (NumberFormatException ignored) {}
-                    }
-                    int viewResult = confReader.viewPlayerKit(player, kitIndex);
+                    try {
+                        kitIndex = Integer.parseInt(args[3]);
+                        kitIndex--;
+                    } catch (NumberFormatException ignored) {}
+                    int viewResult = confReader.viewPlayerKit(player, player, kitIndex);
                     if (viewResult == -1) {
                         sender.sendMessage("You don't have a kits collection. Learn how to make one with '/ckits help save'");
                     } else if (viewResult == -2) {
@@ -43,75 +51,162 @@ public class view {
                         viewResult++;
                         sender.sendMessage("Viewing personal kit "+viewResult);
                     }
-
                 } else {
-                    //view all my kits
-                    confReader.viewPlayerCollection(player, player, 0);
-                }
-
-
-            } else if (Objects.equals(args[1], "default")) {
-                //view server kits
-
-            } else if (Objects.equals(args[1], "global")) {
-                //view list of player kits
-
-            } else if (Objects.equals(args[1], "admin")) {
-                if (args.length > 2) {
-                    if (Objects.equals(args[2], "save")) {
-                        helpMessage.add("/ckadmin save toDefault <collectionName> <kitName> fromCurrent");
-                        helpMessage.add("/ckadmin save toDefault <collectionName> <kitName> fromDefault <kitName>");
-                        helpMessage.add("/ckadmin save toDefault <collectionName> <kitName> fromGlobal <player> <num>");
-                        helpMessage.add("/ckadmin save toPersonal <player> <num> fromCurrent");
-                        helpMessage.add("/ckadmin save toPersonal <player> <num> fromDefault <kitName>");
-                        helpMessage.add("/ckadmin save toPersonal <player> <num> fromGlobal <player> <num>");
-                        helpMessage.add("Info: Saves a kit to the default collection or to a player's collection.");
-
-                    } else if (Objects.equals(args[2], "load")) {
-                        helpMessage.add("/ckadmin load <player> fromDefault <kitName>");
-                        helpMessage.add("/ckadmin load <player> fromGlobal <player> <num>");
-                        helpMessage.add("Info: Force-loads a specified kit onto a player");
-
-                    } else if (Objects.equals(args[2], "delete")) {
-                        helpMessage.add("/ckadmin delete fromDefault <collectionName> <kitName>");
-                        helpMessage.add("/ckadmin delete fromDefault <collectionName> all");
-                        helpMessage.add("/ckadmin delete fromGlobal <player> <num>");
-                        helpMessage.add("/ckadmin delete fromGlobal <player> all");
-                        helpMessage.add("Info: Force-deletes a kit from a collection.");
-
+                    int pageIndex = 0;
+                    if (args.length > 3 && Objects.equals(args[2], "page")) {
+                        try {
+                            pageIndex = Integer.parseInt(args[3]);
+                            pageIndex--;
+                        } catch (NumberFormatException ignored) {}
+                    }
+                    int viewResult = confReader.viewPlayerCollection(player, player, pageIndex);
+                    if (viewResult == -1) {
+                        sender.sendMessage("You don't have any kits. Learn how to make one with '/ckits help save'");
                     } else {
-                        helpMessage.add("/ckits help admin save");
-                        helpMessage.add("/ckits help admin load");
-                        helpMessage.add("/ckits help admin delete");
-                        helpMessage.add("Info: Sends syntax and info about a CuteKits Admin subcommand.");
-
+                        sender.sendMessage("Viewing personal collection page "+pageIndex);
+                    }
+                }
+            }
+            else if (Objects.equals(args[1], "default"))
+            {
+                if (args.length > 3 && Objects.equals(args[2], "kit")) {
+                    String kitName = args[3];//could be invalid
+                    int viewResult = confReader.viewDefaultKit(player, kitName);
+                    if (viewResult == -1) {
+                        sender.sendMessage("Couldn't find default kit collection.");
+                    } else if (viewResult == -2) {
+                        sender.sendMessage("Couldn't find default kit from kitName.");
+                    } else {
+                        sender.sendMessage("Viewing default kit '"+kitName+"'");
+                    }
+                } else if (args.length > 3 && Objects.equals(args[2], "collection")) {
+                    String collectionName = args[3];//could be invalid
+                    int pageIndex = 0;
+                    if (args.length > 5 && Objects.equals(args[4], "page")) {
+                        try {
+                            pageIndex = Integer.parseInt(args[3]);
+                            pageIndex--;
+                        } catch (NumberFormatException ignored) {}
+                    }
+                    int viewResult = confReader.viewDefaultCollection(player, collectionName, pageIndex);
+                    if (viewResult == -1) {
+                        sender.sendMessage("Couldn't find default kit collection.");
+                    } else {
+                        sender.sendMessage("Viewing default collection '"+collectionName+"' page "+pageIndex);
                     }
                 } else {
-                    helpMessage.add("/ckits help admin save");
-                    helpMessage.add("/ckits help admin load");
-                    helpMessage.add("/ckits help admin delete");
-                    helpMessage.add("Info: Sends syntax and info about a CuteKits Admin subcommand.");
+                    int pageIndex = 0;
+                    if (args.length > 3 && Objects.equals(args[2], "page")) {
+                        try {
+                            pageIndex = Integer.parseInt(args[3]);
+                            pageIndex--;
+                        } catch (NumberFormatException ignored) {}
+                    }
+                    confReader.viewAllDefaultCollections(player, pageIndex);
+                    sender.sendMessage("Viewing default collections page "+pageIndex);
+                }
+            }
+            else if (Objects.equals(args[1], "global"))
+            {
+                if (args.length > 3 && Objects.equals(args[2], "player")) {
+                    String kitOwnerName = args[3];//could be invalid
+                    Player kitOwner = Bukkit.getPlayer(kitOwnerName);
+                    if (kitOwner != null) {
+                        if (args.length > 5 && Objects.equals(args[4], "kit")) {
+                            int kitIndex = 0;
+                            try {
+                                kitIndex = Integer.parseInt(args[5]);
+                                kitIndex--;
+                            } catch (NumberFormatException ignored) {}
+                            int viewResult = confReader.viewPlayerKit(player, kitOwner, kitIndex);
+                            if (viewResult == -1) {
+                                sender.sendMessage(kitOwnerName+" doesn't have a kits collection.");
+                            } else if (viewResult == -2) {
+                                sender.sendMessage(kitOwnerName+" doesn't have any kits.");
+                            } else {
+                                viewResult++;
+                                sender.sendMessage("Viewing "+kitOwnerName+"'s global kit "+viewResult);
+                            }
+                        } else {
+                            int pageIndex = 0;
+                            if (args.length > 5 && Objects.equals(args[4], "page")) {
+                                try {
+                                    pageIndex = Integer.parseInt(args[5]);
+                                    pageIndex--;
+                                } catch (NumberFormatException ignored) {}
+                            }
+                            int viewResult = confReader.viewPlayerCollection(player, kitOwner, pageIndex);
+                            if (viewResult == -1) {
+                                sender.sendMessage("The selected player doesn't have any kits.");
+                            } else {
+                                sender.sendMessage("Viewing "+kitOwnerName+"'s global collection page "+pageIndex);
+                            }
+                        }
+                    } else {
+                        sender.sendMessage("Global Player not found.");
+                    }
 
                 }
-
+                else
+                {
+                    int pageIndex = 0;
+                    if (args.length > 3 && Objects.equals(args[2], "page")) {
+                        try {
+                            pageIndex = Integer.parseInt(args[3]);
+                            pageIndex--;
+                        } catch (NumberFormatException ignored) {}
+                    }
+                    confReader.viewAllGlobalCollections(player, pageIndex);
+                    sender.sendMessage("Viewing global collections page "+pageIndex);
+                }
             } else {
-                helpMessage.add("/ckits help save");
-                helpMessage.add("/ckits help load");
-                helpMessage.add("/ckits help move");
-                helpMessage.add("/ckits help delete");
-                helpMessage.add("/ckits help shout");
-                helpMessage.add("/ckits help items");
-                helpMessage.add("/ckits help admin");
-                helpMessage.add("Info: Sends syntax and info about a CuteKits subcommand.");
-
+                confReader.viewMainMenu(player);
             }
-        } else {
-            confReader.viewMainMenu(player);
         }
 
-        for (String s : helpMessage) {
-            sender.sendMessage(s);
-        }
+//        if (args.length > 1) {
+//            if (Objects.equals(args[1], "personal")) {
+//                if (args.length > 2) {
+//                    int kitIndex = 0;
+//                    if (args.length >= 3) {
+//                        try {
+//                            kitIndex = Integer.parseInt(args[2]);
+//                            kitIndex--;
+//                        } catch (NumberFormatException ignored) {}
+//                    }
+//                    int viewResult = confReader.viewPlayerKit(player, player, kitIndex);
+//                    if (viewResult == -1) {
+//                        sender.sendMessage("You don't have a kits collection. Learn how to make one with '/ckits help save'");
+//                    } else if (viewResult == -2) {
+//                        sender.sendMessage("You don't have any kits. Learn how to make one with '/ckits help save'");
+//                    } else {
+//                        viewResult++;
+//                        sender.sendMessage("Viewing personal kit "+viewResult);
+//                    }
+//
+//                } else {
+//                    //view all my kits
+//                    confReader.viewPlayerCollection(player, player, 0);
+//                }
+//
+//
+//            } else if (Objects.equals(args[1], "default")) {
+//                if (args.length > 2) {
+//                    int
+//                } else {
+//                    //view server kits
+//                    confReader.viewDefaultCollections(player, 0);
+//                }
+//
+//            } else if (Objects.equals(args[1], "global")) {
+//                //view list of player kits
+//
+//            } else {
+//                confReader.viewMainMenu(player);
+//            }
+//        } else {
+//            confReader.viewMainMenu(player);
+//        }
 
         return true;
     }

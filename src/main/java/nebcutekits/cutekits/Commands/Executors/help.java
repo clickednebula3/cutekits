@@ -20,22 +20,27 @@ public class help {
 
         if (args.length > 1) {
             if (Objects.equals(args[1], "save")) {
-                helpMessage.add("/ckits save default <kitname> <personal kit number to override>");
                 helpMessage.add("/ckits save current <personal kit number to override>");
+                helpMessage.add("/ckits save default <kitname> <personal kit number to override>");
                 helpMessage.add("/ckits save global <player name> <player kit number> <personal kit number to override>");
                 helpMessage.add("Info: Adds a kit to your personal kits.");
 
             } else if (Objects.equals(args[1], "load")) {
-                helpMessage.add("/ckits load default <kitname>");
                 helpMessage.add("/ckits load personal <personal kit number>");
+                helpMessage.add("/ckits load default <kitname>");
                 helpMessage.add("/ckits load global <player name> <player kit number>");
                 helpMessage.add("Info: Loads a kit to your current inventory.");
 
             } else if (Objects.equals(args[1], "view")) {
                 helpMessage.add("/ckits view");
-                helpMessage.add("/ckits view personal");
-                helpMessage.add("/ckits view default");
-                helpMessage.add("/ckits view global");
+                helpMessage.add("/ckits view personal kit <personal kit number>");
+                helpMessage.add("/ckits view personal page <page>");
+                helpMessage.add("/ckits view default kit <kitname>");
+                helpMessage.add("/ckits view default collection <collection name> page <page>");
+                helpMessage.add("/ckits view default page <page>");
+                helpMessage.add("/ckits view global player <player name> kit <player kit number>");
+                helpMessage.add("/ckits view global player <player name> page <page>");
+                helpMessage.add("/ckits view global page <page>");
                 helpMessage.add("Info: Opens the Navigable cKits GUI.");
 
             } else if (Objects.equals(args[1], "move")) {

@@ -42,6 +42,7 @@ public class load {
                         sender.sendMessage("To get the same kit in the future, type '/ckits load personal 1'. Learn more with '/ckits help'");
                     }
                 }
+                Bukkit.broadcastMessage(((Player) sender).getPlayer().getName()+" Loaded Default kit '"+kitName+"'");
             }
 
         } else if (Objects.equals(args[1], "personal")) {
@@ -60,6 +61,7 @@ public class load {
             } else {
                 loadResult++;
                 sender.sendMessage("Loaded personal kit "+loadResult);
+                Bukkit.broadcastMessage(((Player) sender).getPlayer().getName()+" Loaded their kit slot "+loadResult);
             }
 
         } else if (Objects.equals(args[1], "global")) {
@@ -91,6 +93,7 @@ public class load {
             } else {
                 loadResult++;
                 sender.sendMessage("Loaded "+globalPlayer.getName()+"'s kit slot "+loadResult);
+                Bukkit.broadcastMessage(((Player) sender).getPlayer().getName()+" Loaded "+globalPlayer.getName()+"'s kit slot "+loadResult);
             }
 
         } else {

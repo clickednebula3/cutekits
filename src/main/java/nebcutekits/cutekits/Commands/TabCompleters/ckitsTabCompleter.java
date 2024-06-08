@@ -51,6 +51,10 @@ public class ckitsTabCompleter implements TabCompleter {
                 tabCompleteString.add("personal");
                 tabCompleteString.add("default");
                 tabCompleteString.add("global");
+            } else if (Objects.equals(args[0], "view")) {
+                tabCompleteString.add("personal");
+                tabCompleteString.add("default");
+                tabCompleteString.add("global");
             } else if (Objects.equals(args[0], "move")) {
                 tabCompleteString.add("1");
                 tabCompleteString.add("2");
@@ -69,10 +73,6 @@ public class ckitsTabCompleter implements TabCompleter {
                 tabCompleteString.add("3");
                 tabCompleteString.add("4");
                 tabCompleteString.add("5");
-            } else if (Objects.equals(args[0], "view")) {
-                tabCompleteString.add("personal");
-                tabCompleteString.add("default");
-                tabCompleteString.add("global");
             }
         }
         else if (args.length == 3)
@@ -99,6 +99,18 @@ public class ckitsTabCompleter implements TabCompleter {
                         tabCompleteString.add(p.getName());
                     }
                 }
+            } else if (Objects.equals(args[0], "view")) {
+                if (Objects.equals(args[1], "personal")) {
+                    tabCompleteString.add("kit");
+                    tabCompleteString.add("page");
+                } else if (Objects.equals(args[1], "default")) {
+                    tabCompleteString.add("kit");
+                    tabCompleteString.add("collection");
+                    tabCompleteString.add("page");
+                } else if (Objects.equals(args[1], "global")) {
+                    tabCompleteString.add("player");
+                    tabCompleteString.add("page");
+                }
             } else if (Objects.equals(args[0], "move")) {
                 tabCompleteString.add("1");
                 tabCompleteString.add("2");
@@ -123,16 +135,75 @@ public class ckitsTabCompleter implements TabCompleter {
                     tabCompleteString.add("4");
                     tabCompleteString.add("5");
                 }
+            } else if (Objects.equals(args[0], "view")) {
+                if (Objects.equals(args[1], "personal") && (Objects.equals(args[2], "kit") || Objects.equals(args[2], "page"))) {
+                    tabCompleteString.add("1");
+                    tabCompleteString.add("2");
+                    tabCompleteString.add("3");
+                    tabCompleteString.add("4");
+                    tabCompleteString.add("5");
+                } else if (Objects.equals(args[1], "default")) {
+                    if (Objects.equals(args[2], "kit")) {
+                        tabCompleteString.addAll(confReader.getDefaultKitNames());
+                    } else if (Objects.equals(args[2], "collection")) {
+                        tabCompleteString.addAll(confReader.getDefaultCollectionNames());
+                    } else if (Objects.equals(args[2], "page")) {
+                        tabCompleteString.add("1");
+                        tabCompleteString.add("2");
+                        tabCompleteString.add("3");
+                        tabCompleteString.add("4");
+                        tabCompleteString.add("5");
+                    }
+                } else if (Objects.equals(args[1], "global")) {
+                    if (Objects.equals(args[2], "player")) {
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            tabCompleteString.add(player.getName());
+                        }
+                    } else if (Objects.equals(args[2], "page")) {
+                        tabCompleteString.add("1");
+                        tabCompleteString.add("2");
+                        tabCompleteString.add("3");
+                        tabCompleteString.add("4");
+                        tabCompleteString.add("5");
+                    }
+                }
             }
         }
         else if (args.length == 5)
         {
-            if (Objects.equals(args[0], "save") && args[0].equals("global")) {
+            if (Objects.equals(args[0], "save") && args[1].equals("global")) {
                 tabCompleteString.add("1");
                 tabCompleteString.add("2");
                 tabCompleteString.add("3");
                 tabCompleteString.add("4");
                 tabCompleteString.add("5");
+            } else if (Objects.equals(args[0], "view")) {
+                if (Objects.equals(args[1], "default") && Objects.equals(args[2], "collection")) {
+                    tabCompleteString.add("page");
+                } else if (Objects.equals(args[1], "global") && Objects.equals(args[2], "player")) {
+                    tabCompleteString.add("kit");
+                    tabCompleteString.add("page");
+                }
+            }
+        }
+        else if (args.length == 6)
+        {
+            if (Objects.equals(args[0], "view")) {
+                if (Objects.equals(args[1], "default") && Objects.equals(args[2], "collection") && Objects.equals(args[4], "page")) {
+                    tabCompleteString.add("1");
+                    tabCompleteString.add("2");
+                    tabCompleteString.add("3");
+                    tabCompleteString.add("4");
+                    tabCompleteString.add("5");
+                } else if (Objects.equals(args[1], "global") && Objects.equals(args[2], "player") &&
+                        (Objects.equals(args[4], "kit") || Objects.equals(args[4], "page"))
+                ) {
+                    tabCompleteString.add("1");
+                    tabCompleteString.add("2");
+                    tabCompleteString.add("3");
+                    tabCompleteString.add("4");
+                    tabCompleteString.add("5");
+                }
             }
         }
 
