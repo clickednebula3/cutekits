@@ -19,6 +19,14 @@ public class ConfigReader {
     public List<KitCollection> defaultCollections = new ArrayList<>();
     public List<KitCollection> playerCollections = new ArrayList<>();
 
+    private final int v = 2;//config data version
+
+
+    private String perm_kit_access = "cutekits.kit.";
+    private String perm_bypass = perm_kit_access+"bypass";
+    private String perm_explicit_default = perm_kit_access+"default.";
+    private String perm_explicit_global = perm_kit_access+"global.";
+
     public ConfigReader(CuteKits cutekits, FileConfiguration config) {
         this.cutekits = cutekits;
         this.config = config;
@@ -26,6 +34,23 @@ public class ConfigReader {
 
     public void loadConfig() {
         config = cutekits.getConfig();
+
+//        if (config.contains("data")) {
+//            HashMap<String, ?> data = (HashMap<String, ?>) config.get("data");
+//            //update to v format depending on last format
+//            if (data!=null || !data.containsKey("v")) {
+//                //0-1 -> v
+//
+//            } else if (!Objects.equals(data.get("v").toString(), Integer.toString(v))) {
+//                //v_old -> v
+//
+//            }
+//
+//            if (data!=null && data.containsKey("maxPersonalKitCount")) {
+//                //do smth with it idk
+//
+//            }
+//        }
 
         if (config.contains("defaultCollections")) {
             List<?> defaultCollections = config.getList("defaultCollections");
@@ -42,6 +67,7 @@ public class ConfigReader {
                     Kit thisKit = new Kit(
                             (List<ItemStack>) thisKitHash.get("inventory"),
                             (boolean) thisKitHash.get("requiresBuildBreak"),
+                            (String) thisKitHash.get("creation_world"),
                             (String) thisKitHash.get("kitName")
                     );
                     thisCollection.Kits.add(thisKit);
@@ -64,6 +90,7 @@ public class ConfigReader {
                     Kit thisKit = new Kit(
                             (List<ItemStack>) thisKitHash.get("inventory"),
                             (boolean) thisKitHash.get("requiresBuildBreak"),
+                            (String) thisKitHash.get("creation_world"),
                             (String) thisKitHash.get("kitName")
                     );
                     thisCollectionKits.add(thisKit);
@@ -90,6 +117,7 @@ public class ConfigReader {
                 HashMap<String, Object> thisKitHash = new HashMap<>();
                 thisKitHash.put("kitName", thisKit.kitName);
                 thisKitHash.put("requiresBuildBreak", thisKit.requiresBuildBreak);
+                thisKitHash.put("creation_world", thisKit.creation_world);
                 thisKitHash.put("inventory", thisKit.inventory);
                 collectionKits.add(thisKitHash);
             }
@@ -106,6 +134,7 @@ public class ConfigReader {
                 HashMap<String, Object> thisKitHash = new HashMap<>();
                 thisKitHash.put("kitName", thisKit.kitName);
                 thisKitHash.put("requiresBuildBreak", thisKit.requiresBuildBreak);
+                thisKitHash.put("creation_world", thisKit.creation_world);
                 thisKitHash.put("inventory", thisKit.inventory);
                 collectionKits.add(thisKitHash);
             }
@@ -209,7 +238,7 @@ public class ConfigReader {
 
     public void viewMainMenu(Player player) {
         String title = "cKits Menu";
-        Inventory mainInv = Bukkit.createInventory(player, 9*4, title);
+        Inventory mainInv = Bukkit.createInventory(player, 9*3, title);
 
         mainInv.setItem(9+2, generateItem(new ItemStack(Material.DIAMOND), "Personal", "View your owned kits"));
         mainInv.setItem(9+4, generateItem(new ItemStack(Material.IRON_INGOT), "Default", "View server predefined kits"));
@@ -827,6 +856,9 @@ public class ConfigReader {
         if (kitIndex == -1) { return -2; }
 
         Kit kitToApply = defaultCollections.get(collectionIndex).Kits.get(kitIndex);
+
+        if (player.hasPermission(perm_bypass) || player.getWorld().getName().equalsIgnoreCase(kitToApply.creation_world))
+
         player.getInventory().setContents(kitToApply.inventory);
         return kitIndex;
     }

@@ -1,14 +1,14 @@
 name: CuteKits
-version: '1.3-SNAPSHOT'
+version: '1.5-SNAPSHOT'
 main: nebcutekits.cutekits.CuteKits
-api-version: '1.20'
+api-version: '1.21'
 author: nebproductions
-description: A specialised kit plugin made by nebby for nebneb.
+description: A specialised kit plugin made by clickednebula3 "Nebby" for nebneb.
 website: http://nebneb.ddns.net/devlog
 commands:
   ckits:
     description: Main command for CuteKits
-    aliases: [cutekits, ck]
+    aliases: [cutekits, ck, k]
     usage: /ckits {load [default <name>|personal <num>|global <player> <num>] || save [default <name> <overridenum>|current <overridenum>|global <player> <num> <overridenum>] || move <num> <overridenum> || delete <num> || shout <num> || items}
     permission: cutekits.ckits
   ckadmin:
@@ -16,3 +16,13 @@ commands:
     aliases: [cutekitsadmin, ckitsadmin]
     usage: /ckadmin {More stuff I forgot to put here}
     permission: cutekits.admin
+  ck1:
+    description: Quick loads your first saved kit.
+    aliases: [k1]
+    usage: /k1
+    permission: cutekits.ckits
+  ck2:
+    description: Quick loads your second saved kit.
+    aliases: [k2]
+    usage: /k2
+    permission: cutekits.ckits

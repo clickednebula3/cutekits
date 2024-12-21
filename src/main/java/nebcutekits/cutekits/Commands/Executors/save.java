@@ -39,6 +39,7 @@ public class save {
                 } catch (NumberFormatException ignored) {}
             }
 
+
             int saveResult = confReader.saveDefaultKit((Player) sender, kitName, kitIndex);
             if (saveResult == -1) {
                 sender.sendMessage("Could not find collection of '"+kitName+"'");

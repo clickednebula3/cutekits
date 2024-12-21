@@ -28,6 +28,8 @@ public final class CuteKits extends JavaPlugin {
 
         this.getCommand("ckits").setExecutor(new ckitsExecutor(confReader));
         this.getCommand("ckadmin").setExecutor(new ckadminExecutor(confReader));
+        this.getCommand("ck1").setExecutor(new ck1Executor(confReader));
+        this.getCommand("ck2").setExecutor(new ck2Executor(confReader));
 
         this.getCommand("ckits").setTabCompleter(new ckitsTabCompleter(confReader));
         this.getCommand("ckadmin").setTabCompleter(new ckadminTabCompleter(confReader));

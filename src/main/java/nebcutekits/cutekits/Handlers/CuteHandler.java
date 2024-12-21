@@ -23,6 +23,8 @@ public class CuteHandler implements Listener {
         this.confReader = confReader;
     }
 
+    //aww I can't handle this cute
+
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity entityDamager = event.getDamager();
@@ -56,6 +58,8 @@ public class CuteHandler implements Listener {
                 else if (slot == 9+6) { player.performCommand("ck view global"); }
                 else if (slot == 9*2) { player.getInventory().clear(); }
                 else if (slot == (9*2)+8) { player.playSound(player.getLocation(), Sound.ENTITY_FOX_SLEEP, 100, 100); }
+
+                event.setCancelled(true);
             }
             else if (title.startsWith("cKits All Global Collections"))
             {
@@ -71,6 +75,8 @@ public class CuteHandler implements Listener {
                 if (slot == (9*3) && pageIndex <= 0) { player.performCommand("ck view"); }
                 else if (slot == (9*3)) { player.performCommand("ck view global page "+(pageIndex)); }
                 if (slot == (9*3)+8) { player.performCommand("ck view global page "+(pageIndex+2)); }
+
+                event.setCancelled(true);
             }
             else if (title.startsWith("cKits All Default Collections"))
             {
@@ -86,6 +92,8 @@ public class CuteHandler implements Listener {
                 if (slot == (9*3) && pageIndex <= 0) { player.performCommand("ck view"); }
                 else if (slot == (9*3)) { player.performCommand("ck view default page "+(pageIndex)); }
                 if (slot == (9*3)+8) { player.performCommand("ck view default page "+(pageIndex+2)); }
+
+                event.setCancelled(true);
             }
             else if (title.startsWith("cKits Player Collection"))
             {
@@ -106,6 +114,8 @@ public class CuteHandler implements Listener {
                     player.performCommand("ck save current");
                     player.performCommand("ck view personal");
                 }
+
+                event.setCancelled(true);
             }
             else if (title.startsWith("cKits Default Collection"))
             {
@@ -122,6 +132,8 @@ public class CuteHandler implements Listener {
                 if (slot == (9*3) && pageIndex <= 0) { player.performCommand("ck view default"); }
                 else if (slot == (9*3)) { player.performCommand("ck view default collection "+collectionName+" page "+(pageIndex)); }
                 if (slot == (9*3)+8) { player.performCommand("ck view default collection "+collectionName+" page "+(pageIndex+2)); }
+
+                event.setCancelled(true);
             }
             else if (title.startsWith("cKits Player Kit"))
             {
@@ -137,6 +149,7 @@ public class CuteHandler implements Listener {
                     player.performCommand("ck view personal");
                 }
                 if (slot == (9*5)) { player.performCommand("ck view global player "+kitOwner); }
+                if (slot >= (9*5)) { event.setCancelled(true); }
             }
             else if (title.startsWith("cKits Default Kit"))
             {
@@ -145,9 +158,12 @@ public class CuteHandler implements Listener {
                 if (slot == (9*5)+8) { player.performCommand("ck load default "+kitName); }
                 if (slot == (9*5)+7) { player.performCommand("ck save default "+kitName); }
                 if (slot == (9*5)) { player.performCommand("ck view default collection "+collectionName); }
+                if (slot >= (9*5)) { event.setCancelled(true); }
             }
-
-            event.setCancelled(true);
+            else
+            {
+                event.setCancelled(true);
+            }
         }
     }
 }

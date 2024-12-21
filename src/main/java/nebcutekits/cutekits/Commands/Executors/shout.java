@@ -22,6 +22,7 @@ public class shout {
 //        String sharingView = "[View Kit]";
         String sharingLoad = "[Load Kit]";
         String sharingSave = "[Save Kit]";
+        String sharingView = "[View Kit]";
         String playerName = sender.getName();
 
         int kitIndex = 0;
@@ -48,7 +49,11 @@ public class shout {
         kitIndexShow = kitIndex+1;
 
         String tellrawContent = "";
-        tellrawContent = "[{\"text\":\""+playerName+"\",\"color\":\"red\"},{\"text\":\" is sharing kit slot "+kitIndexShow+"!\\n\",\"color\":\"white\"},{\"text\":\""+sharingSave+"\",\"color\":\"gold\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/ckits save global "+playerName+" "+kitIndexShow+"\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"Save "+playerName+"'s Kit Slot "+kitIndexShow+"\"}},\" \",{\"text\":\""+sharingLoad+"\",\"color\":\"green\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/ckits load global "+playerName+" "+kitIndexShow+"\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"Load "+playerName+"'s Kit Slot "+kitIndexShow+"\"}}]";
+        tellrawContent = "[{\"text\":\""+playerName+"\",\"color\":\"red\"}," +
+                "{\"text\":\" is sharing kit slot "+kitIndexShow+"!\\n\",\"color\":\"white\"}," +
+                "{\"text\":\""+sharingView+"\",\"color\":\"gold\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/ckits view global player "+playerName+" kit "+kitIndexShow+"\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"View "+playerName+"'s Kit Slot "+kitIndexShow+"\"}},\" \"," +
+                "{\"text\":\""+sharingSave+"\",\"color\":\"yellow\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/ckits save global "+playerName+" "+kitIndexShow+"\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"Save "+playerName+"'s Kit Slot "+kitIndexShow+"\"}},\" \"," +
+                "{\"text\":\""+sharingLoad+"\",\"color\":\"green\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/ckits load global "+playerName+" "+kitIndexShow+"\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"Load "+playerName+"'s Kit Slot "+kitIndexShow+"\"}}]";
 
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tellraw @a "+tellrawContent);
         return true;

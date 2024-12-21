@@ -1,10 +1,14 @@
 data:
   maxPersonalKitCount: 5
+  rankPersonalKitCount: 5
+  v: 2
 
 defaultCollections:
   - collectionName: fresh
     kits:
-      - requiresBuildBreak: false
+      - kitName: freshiron
+        creation_world: worldio
+        requiresBuildBreak: false
         inventory:
           - ==: org.bukkit.inventory.ItemStack
             v: 3337
@@ -57,13 +61,14 @@ defaultCollections:
             v: 3337
             type: IRON_HELMET
           - null
-        kitName: freshiron
 
 playerCollections:
   - ownerUUID: c1b99d0e-b001-499f-a331-8e6fc12ea6cd
     collectionName: CyberBlades
     kits:
-      - requiresBuildBreak: false
+      - kitName: A Cute Kit
+        creation_world: worldio
+        requiresBuildBreak: false
         inventory:
           - ==: org.bukkit.inventory.ItemStack
             v: 3337
@@ -116,4 +121,3 @@ playerCollections:
             v: 3337
             type: IRON_HELMET
           - null
-        kitName: A Cute Kit

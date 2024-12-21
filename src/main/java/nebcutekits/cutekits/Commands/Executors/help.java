@@ -101,13 +101,13 @@ public class help {
             } else {
                 helpMessage.add("/ckits help save");
                 helpMessage.add("/ckits help load");
+                helpMessage.add("/ckits help view");
                 helpMessage.add("/ckits help move");
                 helpMessage.add("/ckits help delete");
                 helpMessage.add("/ckits help shout");
                 helpMessage.add("/ckits help items");
                 helpMessage.add("/ckits help admin");
                 helpMessage.add("Info: Sends syntax and info about a CuteKits subcommand.");
-
             }
         } else {
             helpMessage.add("/ckits help save");
@@ -119,12 +119,9 @@ public class help {
             helpMessage.add("/ckits help items");
             helpMessage.add("/ckits help admin");
             helpMessage.add("Info: Sends syntax and info about a CuteKits subcommand.");
-
         }
 
-        for (String s : helpMessage) {
-            sender.sendMessage(s);
-        }
+        for (String s : helpMessage) { sender.sendMessage(s); }
 
         return true;
     }

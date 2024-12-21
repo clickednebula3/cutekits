@@ -38,7 +38,7 @@ public class view {
                         sender.sendMessage("You don't have any kits. Learn how to make one with '/ckits help save'");
                     } else {
                         viewResult++;
-                        sender.sendMessage("Viewing personal kit "+viewResult);
+//                        sender.sendMessage("Viewing personal kit "+viewResult);
                     }
                 } else {
                     int pageIndex = 0;
@@ -52,7 +52,7 @@ public class view {
                     if (viewResult == -1) {
                         sender.sendMessage("You don't have any kits. Learn how to make one with '/ckits help save'");
                     } else {
-                        sender.sendMessage("Viewing personal collection page "+pageIndex);
+//                        sender.sendMessage("Viewing personal collection page "+pageIndex);
                     }
                 }
             }
@@ -66,7 +66,8 @@ public class view {
                     } else if (viewResult == -2) {
                         sender.sendMessage("Couldn't find default kit from kitName.");
                     } else {
-                        sender.sendMessage("Viewing default kit '"+kitName+"'");
+//                        sender.sendMessage("Viewing default kit '"+kitName+"'");
+                        Bukkit.broadcastMessage(sender.getName() + " is viewing default kit '"+kitName+"'");
                     }
                 } else if (args.length > 3 && Objects.equals(args[2], "collection")) {
                     String collectionName = args[3];//could be invalid
@@ -81,7 +82,7 @@ public class view {
                     if (viewResult == -1) {
                         sender.sendMessage("Couldn't find default kit collection.");
                     } else {
-                        sender.sendMessage("Viewing default collection '"+collectionName+"' page "+pageIndex);
+//                        sender.sendMessage("Viewing default collection '"+collectionName+"' page "+pageIndex);
                     }
                 } else {
                     int pageIndex = 0;
@@ -92,7 +93,7 @@ public class view {
                         } catch (NumberFormatException ignored) {}
                     }
                     confReader.viewAllDefaultCollections(player, pageIndex);
-                    sender.sendMessage("Viewing default collections page "+pageIndex);
+//                    sender.sendMessage("Viewing default collections page "+pageIndex);
                 }
             }
             else if (Objects.equals(args[1], "global"))
@@ -114,7 +115,8 @@ public class view {
                             sender.sendMessage(kitOwnerName + " doesn't have any kits.");
                         } else {
                             viewResult++;
-                            sender.sendMessage("Viewing " + kitOwnerName + "'s global kit " + viewResult);
+//                            sender.sendMessage("Viewing " + kitOwnerName + "'s global kit " + viewResult);
+                            Bukkit.broadcastMessage(sender.getName()+" is viewing "+kitOwnerName+"'s global kit "+viewResult);
                         }
                     } else {
                         int pageIndex = 0;
@@ -129,7 +131,7 @@ public class view {
                         if (viewResult == -1) {
                             sender.sendMessage("The selected player doesn't have any kits.");
                         } else {
-                            sender.sendMessage("Viewing " + kitOwnerName + "'s global collection page " + pageIndex);
+//                            sender.sendMessage("Viewing " + kitOwnerName + "'s global collection page " + pageIndex);
                         }
                     }
 
@@ -144,7 +146,7 @@ public class view {
                         } catch (NumberFormatException ignored) {}
                     }
                     confReader.viewAllGlobalCollections(player, pageIndex);
-                    sender.sendMessage("Viewing global collections page "+pageIndex);
+//                    sender.sendMessage("Viewing global collections page "+pageIndex);
                 }
             } else {
                 confReader.viewMainMenu(player);
